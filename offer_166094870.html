@@ -22,17 +22,17 @@
 
         const tourData = {
             city: "НЯЧАНГ",
-            dates: "10 мая 2026 - 15 мая 2026",
+            dates: "10-14 мая",
             pax: 2,
-            totalPrice: "1300000 вон",
+            totalPrice: "2150000 вон",
             logoPath: "logo.png",
             contact: {
                 whatsapp: "821099752550",
                 instagram: "https://www.instagram.com/mango.tour_?utm_source=qr&igsh=MWoyZDZ6NnZrcXg3cA==",
                 facebook: "https://www.facebook.com/share/1FHwMCpMCN/?mibextid=wwXIfr"
             },
-            flights: [{"airline": "Air Seoul", "depTime": "19:50", "arrTime": "22:55", "from": "ICN", "to": "CXR", "number": "", "duration": "5 ч. 05 мин.", "baggage": "", "type": "туда"}, {"airline": "Air Seoul", "depTime": "00:05", "arrTime": "07:10", "from": "CXR", "to": "ICN", "number": "", "duration": "5 ч. 05 мин.", "baggage": "", "type": "обратно"}],
-            hotels: [{"name": "Emerald Bay Hotel & Spa", "stars": 5, "rating": 4.8, "location": "Нячанг", "roomType": "TWIN INNER-SUPERIOR", "mealPlan": "Завтрак включен", "images": [], "reviews": []}],
+            flights: [{"airline": "Eastar Jet", "depTime": "20:55", "arrTime": "23:55", "from": "Сеул Инчхон", "to": "Нячанг Камрань", "number": "", "duration": "5 ч.", "baggage": "", "type": "туда"}, {"airline": "Eastar Jet", "depTime": "01:10", "arrTime": "07:55", "from": "Нячанг Камрань", "to": "Сеул Инчхон", "number": "", "duration": "4 ч. 45 мин.", "baggage": "", "type": "обратно"}],
+            hotels: [{"name": "Aquamarine Cam Ranh By Swandor", "stars": 5, "rating": 4.8, "location": "Нячанг", "roomType": "Deluxe Twin Room, Ocean View", "mealPlan": "All Inclusive", "images": [], "reviews": []}],
             igReels: [{"thumbnail": "http://instagram.com/static/images/ico/favicon-200.png/ab6eff595bb1.png", "link": "https://www.instagram.com/stories/highlights/18404039212150167/"}, {"thumbnail": "http://instagram.com/static/images/ico/favicon-200.png/ab6eff595bb1.png", "link": "https://www.instagram.com/stories/highlights/18073118810103351/"}, {"thumbnail": "http://instagram.com/static/images/ico/favicon-200.png/ab6eff595bb1.png", "link": "https://www.instagram.com/stories/highlights/18207003232316313/"}, {"thumbnail": "http://instagram.com/static/images/ico/favicon-200.png/ab6eff595bb1.png", "link": "https://www.instagram.com/stories/highlights/18098414977586720/"}]
         };
 
@@ -250,7 +250,7 @@
                                     {/* Цена и WhatsApp */}
                                     <a href={getOrderLink(hotel.name)} target="_blank" rel="noopener noreferrer"
                                        className="block bg-orange-500 rounded-3xl px-6 py-6 text-center shadow-lg active:scale-95 transition-all">
-                                        <p className="text-3xl font-black text-white italic tracking-tighter mb-4">{tourData.totalPrice}</p>
+                                        <p className="text-3xl font-black text-white italic tracking-tighter mb-4">{tourData.totalPrice.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</p>
                                         <div className="inline-flex w-full items-center justify-center gap-2 bg-[#25D366] rounded-2xl px-5 py-3.5 shadow-md">
                                             <i data-lucide="message-circle" className="w-5 h-5 text-white"></i>
                                             <span className="text-white font-black text-sm uppercase tracking-widest italic">Заказать в WhatsApp</span>
