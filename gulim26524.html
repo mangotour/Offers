@@ -1,0 +1,938 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Тур в Гуйлинь - простая страница</title>
+  <style>
+    :root {
+      --bg: #f4f6f5;
+      --surface: #ffffff;
+      --surface-soft: #eef4f1;
+      --text: #17211d;
+      --muted: #66726d;
+      --line: #dce5e1;
+      --accent: #16885f;
+      --accent-dark: #0e6547;
+      --danger: #b94646;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      line-height: 1.5;
+    }
+
+    .page {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 24px 18px 44px;
+    }
+
+    .breadcrumbs {
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      font-size: 13px;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .layout {
+      align-items: start;
+      display: grid;
+      gap: 22px;
+      grid-template-columns: minmax(0, 1fr) 340px;
+    }
+
+    .hero {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .hero img {
+      aspect-ratio: 16 / 9;
+      display: block;
+      height: auto;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .hero-body {
+      padding: 16px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .tag {
+      background: var(--surface-soft);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 12px;
+      padding: 4px 10px;
+    }
+
+    .tag.active {
+      background: #def2ea;
+      border-color: #92d6bd;
+      color: var(--accent-dark);
+      font-weight: 600;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 0;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+
+    .summary {
+      color: var(--muted);
+      font-size: 15px;
+      max-width: 720px;
+    }
+
+    .booking {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      position: sticky;
+      top: 16px;
+    }
+
+    .old-price {
+      color: var(--muted);
+      font-size: 14px;
+      text-decoration: line-through;
+    }
+
+    .badge {
+      background: #fdecec;
+      border-radius: 5px;
+      color: var(--danger);
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      margin-left: 6px;
+      padding: 2px 7px;
+      text-decoration: none;
+    }
+
+    .price {
+      font-size: 32px;
+      font-weight: 750;
+      margin: 4px 0;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .variant {
+      background: var(--surface-soft);
+      border-radius: var(--radius);
+      color: var(--muted);
+      font-size: 13px;
+      margin: 14px 0;
+      padding: 10px;
+    }
+
+    .people {
+      align-items: center;
+      display: flex;
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .people button {
+      align-items: center;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      font-size: 18px;
+      height: 34px;
+      justify-content: center;
+      width: 34px;
+    }
+
+    .count {
+      font-size: 16px;
+      font-weight: 700;
+      min-width: 24px;
+      text-align: center;
+    }
+
+    .total {
+      align-items: center;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      margin-top: 12px;
+      padding-top: 14px;
+    }
+
+    .total strong {
+      font-size: 22px;
+    }
+
+    .primary,
+    .secondary {
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: 15px;
+      min-height: 44px;
+      width: 100%;
+    }
+
+    .primary {
+      align-items: center;
+      background: #25D366;
+      border: 0;
+      border-radius: 12px;
+      box-shadow: 0 10px 22px rgba(37, 211, 102, 0.24);
+      color: white;
+      display: flex;
+      font-weight: 800;
+      gap: 9px;
+      justify-content: center;
+      letter-spacing: 0.1px;
+      margin: 16px 0 8px;
+      min-height: 50px;
+      text-decoration: none;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+    }
+
+    .primary:hover {
+      background: #1fbd5a;
+      box-shadow: 0 12px 26px rgba(37, 211, 102, 0.32);
+      transform: translateY(-1px);
+    }
+
+    .primary:active {
+      transform: translateY(0);
+    }
+
+    .whatsapp-icon {
+      align-items: center;
+      background: rgba(255, 255, 255, 0.18);
+      border-radius: 999px;
+      display: inline-flex;
+      flex: 0 0 auto;
+      height: 28px;
+      justify-content: center;
+      width: 28px;
+    }
+
+    .whatsapp-icon svg {
+      display: block;
+      height: 18px;
+      width: 18px;
+    }
+
+    .mobile-whatsapp {
+      display: none;
+    }
+
+    .secondary {
+      background: white;
+      border: 1px solid var(--line);
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .flight {
+      background: var(--surface-soft);
+      border-radius: var(--radius);
+      margin-top: 12px;
+      padding: 12px;
+    }
+
+    .flight-title {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .flight-row {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .time {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .airport {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      margin-top: 20px;
+      padding: 20px;
+    }
+
+    .section h2 {
+      border-bottom: 1px solid var(--line);
+      font-size: 18px;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+    }
+
+    .features {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .feature,
+    .hotel,
+    .include-row {
+      align-items: start;
+      display: flex;
+      gap: 10px;
+    }
+
+    .mark {
+      align-items: center;
+      background: #def2ea;
+      border-radius: 999px;
+      color: var(--accent-dark);
+      display: flex;
+      flex: 0 0 auto;
+      font-size: 12px;
+      font-weight: 800;
+      height: 24px;
+      justify-content: center;
+      width: 24px;
+    }
+
+    .route {
+      border-left: 2px solid var(--line);
+      margin-left: 8px;
+      padding-left: 18px;
+    }
+
+    .day {
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    .day:last-child {
+      margin-bottom: 0;
+    }
+
+    .day::before {
+      background: var(--accent);
+      border-radius: 999px;
+      content: "";
+      height: 10px;
+      left: -24px;
+      position: absolute;
+      top: 7px;
+      width: 10px;
+    }
+
+    .day h3 {
+      color: var(--accent-dark);
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .day p,
+    .hotel p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .excursions {
+      display: grid;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .excursion {
+      align-items: center;
+      background: var(--surface-soft);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      font: inherit;
+      gap: 10px;
+      min-height: 42px;
+      padding: 9px 11px;
+      text-align: left;
+      width: 100%;
+    }
+
+    .excursion:hover {
+      border-color: #92d6bd;
+      box-shadow: 0 4px 14px rgba(22, 136, 95, 0.08);
+    }
+
+    .excursion span:first-child {
+      flex: 0 0 auto;
+      font-size: 18px;
+      width: 22px;
+    }
+
+    .modal {
+      align-items: center;
+      background: rgba(12, 20, 17, 0.58);
+      display: none;
+      inset: 0;
+      justify-content: center;
+      padding: 18px;
+      position: fixed;
+      z-index: 20;
+    }
+
+    .modal.open {
+      display: flex;
+    }
+
+    .modal-card {
+      background: var(--surface);
+      border-radius: 10px;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+      max-height: min(760px, 92vh);
+      max-width: 620px;
+      overflow: auto;
+      position: relative;
+      width: 100%;
+    }
+
+    .modal-card img {
+      aspect-ratio: 16 / 9;
+      display: block;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .modal-body {
+      padding: 18px;
+    }
+
+    .modal-kicker {
+      color: var(--accent-dark);
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .modal-body h3 {
+      font-size: 22px;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+
+    .modal-body p {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .modal-close {
+      align-items: center;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      cursor: pointer;
+      display: flex;
+      font-size: 22px;
+      height: 38px;
+      justify-content: center;
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      width: 38px;
+    }
+
+    .hotel {
+      border-bottom: 1px solid var(--line);
+      padding: 12px 0;
+    }
+
+    .hotel:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .hotel-photo {
+      background: linear-gradient(135deg, #bee9da, #88cdb3);
+      border-radius: var(--radius);
+      flex: 0 0 auto;
+      height: 58px;
+      width: 72px;
+    }
+
+    .includes {
+      display: grid;
+      gap: 10px;
+    }
+
+    .optional-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .optional-tour {
+      background: var(--surface-soft);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      cursor: pointer;
+      overflow: hidden;
+      text-align: left;
+      width: 100%;
+    }
+
+    .optional-tour:hover {
+      border-color: #92d6bd;
+      box-shadow: 0 4px 14px rgba(22, 136, 95, 0.08);
+    }
+
+    .optional-body {
+      padding: 12px;
+    }
+
+    .optional-title {
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .optional-meta {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .optional-price {
+      color: var(--accent-dark);
+      font-size: 14px;
+      font-weight: 800;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 760px) {
+      .layout,
+      .features,
+      .optional-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .page {
+        padding-bottom: 96px;
+      }
+
+      .booking {
+        position: static;
+      }
+
+      h1 {
+        font-size: 21px;
+      }
+
+      .mobile-whatsapp {
+        background: rgba(255, 255, 255, 0.94);
+        border-top: 1px solid var(--line);
+        bottom: 0;
+        box-shadow: 0 -8px 26px rgba(0, 0, 0, 0.08);
+        display: block;
+        left: 0;
+        padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+        position: fixed;
+        right: 0;
+        z-index: 15;
+      }
+
+      .mobile-whatsapp .primary {
+        margin: 0 auto;
+        max-width: 520px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="layout">
+      <article>
+        <section class="hero">
+          <img src="https://img.modetour.com/eagle/photoimg/46428/Bfile/635636757655684879.jpg" alt="Гуйлинь, мост и горный пейзаж">
+          <div class="hero-body">
+            <div class="tags">
+              <span class="tag active">Прямой рейс</span>
+              <span class="tag">4 ночи / 6 дней</span>
+            </div>
+            <h1>Гуйлинь и Яншо: горы, река Ли и вечернее шоу</h1>
+            <p class="summary">Насыщенный тур по самым красивым местам Гуйлиня: карстовые пики, круиз по реке Ли, отели 4-5 звезд, массаж ног и вечерняя программа без обязательного шопинга.</p>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Что входит в тур</h2>
+          <div class="features">
+            <div class="feature"><span class="mark">✓</span><div>Проживание в отелях 4-5 звезд по маршруту</div></div>
+            <div class="feature"><span class="mark">✓</span><div>Круиз по реке Ли с видами на карстовые горы</div></div>
+            <div class="feature"><span class="mark">✓</span><div>Питание по программе и трансферы</div></div>
+            <div class="feature"><span class="mark">✓</span><div>Шоу, обзорные экскурсии и массаж ног 60 минут</div></div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Маршрут</h2>
+          <div class="route">
+            <div class="day">
+              <h3>День 1: Инчхон - Гуйлинь</h3>
+              <p>Вечерний вылет, прибытие ночью, трансфер в отель и отдых.</p>
+            </div>
+            <div class="day">
+              <h3>День 2: Главные виды Гуйлиня</h3>
+              <div class="excursions">
+                <button class="excursion" type="button" onclick="openExcursion('reedFlute')"><span>▣</span><span>Пещера Лужуань</span></button>
+                <button class="excursion" type="button" onclick="openExcursion('elephantHill')"><span>▣</span><span>Гора Слонового хобота</span></button>
+                <button class="excursion" type="button" onclick="openExcursion('diecai')"><span>▣</span><span>Гора Дяочайшань</span></button>
+                <button class="excursion" type="button" onclick="openExcursion('sanjie')"><span>▣</span><span>Вечернее шоу «Санскан»</span></button>
+              </div>
+            </div>
+            <div class="day">
+              <h3>День 3: Исторический центр</h3>
+              <div class="excursions">
+                <button class="excursion" type="button" onclick="openExcursion('fubo')"><span>▣</span><span>Гора Фубошань</span></button>
+                <button class="excursion" type="button" onclick="openExcursion('dongxi')"><span>▣</span><span>Старинная улица Дунсисян</span></button>
+                <button class="excursion" type="button" onclick="openExcursion('jingjiang')"><span>▣</span><span>Дворцовый комплекс Цзинцзян</span></button>
+              </div>
+            </div>
+            <div class="day">
+              <h3>День 4: Яншо и река Ли</h3>
+              <div class="excursions">
+                <button class="excursion" type="button" onclick="openExcursion('liRiver')"><span>▣</span><span>Круиз по реке Ли</span></button>
+                <button class="excursion" type="button" onclick="openExcursion('westStreet')"><span>▣</span><span>Западная улица Сицзе</span></button>
+              </div>
+            </div>
+            <div class="day">
+              <h3>День 5-6: Финал маршрута</h3>
+              <div class="excursions">
+                <button class="excursion" type="button" onclick="openExcursion('minorityVillage')"><span>▣</span><span>Фольклорная деревня Шивайтаоюань</span></button>
+                <button class="excursion" type="button" onclick="openExcursion('sevenStar')"><span>▣</span><span>Парк Цисингун</span></button>
+                <button class="excursion" type="button" onclick="openExcursion('pagodas')"><span>▣</span><span>Золотая и Серебряная пагоды</span></button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Отели</h2>
+          <div class="hotel">
+            <div class="hotel-photo"></div>
+            <div>
+              <strong>Guilin Jishan Hotel</strong>
+              <p>Гуйлинь, 4 звезды, первые ночи маршрута.</p>
+            </div>
+          </div>
+          <div class="hotel">
+            <div class="hotel-photo"></div>
+            <div>
+              <strong>Yangshuo Grand Regency Hotel</strong>
+              <p>Яншо, 5 звезд, ночь перед возвращением.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Включено и не включено</h2>
+          <div class="includes">
+            <div class="include-row"><span class="mark">✓</span><div>Авиаперелет, проживание, питание, транспорт и входные билеты по программе.</div></div>
+            <div class="include-row"><span class="mark">✓</span><div>Топливный сбор и базовая туристическая страховка.</div></div>
+            <div class="include-row"><span class="mark">!</span><div>Не включены личные расходы и дополнительные экскурсии по желанию.</div></div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Дополнительные экскурсии по желанию</h2>
+          <div class="optional-grid">
+            <button class="optional-tour" type="button" onclick="openExcursion('nightCruise')">
+              <div class="optional-body">
+                <div class="optional-title">Ночной круиз по четырём озёрам и рекам</div>
+                <div class="optional-meta">60 минут · при отказе свободное время на ночном рынке</div>
+                <div class="optional-price">Взрослый / ребёнок: $45</div>
+              </div>
+            </button>
+
+            <button class="optional-tour" type="button" onclick="openExcursion('ruyiCable')">
+              <div class="optional-body">
+                <div class="optional-title">Канатная дорога Жуи</div>
+                <div class="optional-meta">120 минут · при отказе свободное время рядом с парковкой</div>
+                <div class="optional-price">Взрослый / ребёнок: $65</div>
+              </div>
+            </button>
+
+            <button class="optional-tour" type="button" onclick="openExcursion('impressionShow')">
+              <div class="optional-body">
+                <div class="optional-title">Шоу «Впечатление Лю Саньцзе»</div>
+                <div class="optional-meta">60 минут · при отказе свободное время на Западной улице</div>
+                <div class="optional-price">Взрослый / ребёнок: $50</div>
+              </div>
+            </button>
+
+            <button class="optional-tour" type="button" onclick="openExcursion('bodyMassage')">
+              <div class="optional-body">
+                <div class="optional-title">Массаж всего тела</div>
+                <div class="optional-meta">Около 1 часа · при отказе ожидание в комнате отдыха с чаем</div>
+                <div class="optional-price">Взрослый / ребёнок: $35</div>
+              </div>
+            </button>
+          </div>
+        </section>
+      </article>
+
+      <aside class="booking" aria-label="Бронирование">
+        <div class="price">990 000 ₩</div>
+        <div class="small">за человека</div>
+
+        <div class="people">
+          <button type="button" onclick="changePeople(-1)" aria-label="Уменьшить количество">-</button>
+          <div class="count" id="peopleCount">2</div>
+          <button type="button" onclick="changePeople(1)" aria-label="Увеличить количество">+</button>
+          <div class="small">человека</div>
+        </div>
+
+        <div class="total">
+          <span class="small">Итого</span>
+          <strong id="totalPrice">1 980 000 ₩</strong>
+        </div>
+
+
+
+        <div class="flight">
+          <div class="flight-title">Вылет</div>
+          <div class="flight-row">
+            <div>
+              <div class="time">22:20</div>
+              <div class="airport">24 мая, Инчхон</div>
+            </div>
+            <div class="small">→</div>
+            <div style="text-align:right">
+              <div class="time">01:20</div>
+              <div class="airport">25 мая, Гуйлинь</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flight">
+          <div class="flight-title">Возвращение</div>
+          <div class="flight-row">
+            <div>
+              <div class="time">02:20</div>
+              <div class="airport">29 мая, Гуйлинь</div>
+            </div>
+            <div class="small">→</div>
+            <div style="text-align:right">
+              <div class="time">07:15</div>
+              <div class="airport">29 мая, Инчхон</div>
+            </div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+  </main>
+
+  <div class="mobile-whatsapp" aria-label="Быстрая связь в WhatsApp">
+    <a class="primary" href="https://wa.me/821099752550?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B7%D0%B0%D0%B1%D1%80%D0%BE%D0%BD%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%20%D1%82%D1%83%D1%80%20%D0%B2%20%D0%93%D1%83%D0%B9%D0%BB%D0%B8%D0%BD%D1%8C%20%D0%BD%D0%B0%2024%20%D0%BC%D0%B0%D1%8F%202026.%20%D0%9F%D0%BE%D0%B4%D1%81%D0%BA%D0%B0%D0%B6%D0%B8%D1%82%D0%B5%2C%20%D0%BA%D0%B0%D0%BA%20%D0%BE%D1%84%D0%BE%D1%80%D0%BC%D0%B8%D1%82%D1%8C%3F" target="_blank" rel="noopener" aria-label="Написать в WhatsApp для бронирования тура">
+      <span class="whatsapp-icon" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill="currentColor" d="M16.02 3.2C8.96 3.2 3.22 8.89 3.22 15.88c0 2.24.6 4.42 1.73 6.34L3.1 28.8l6.78-1.77a12.9 12.9 0 0 0 6.13 1.56h.01c7.06 0 12.8-5.69 12.8-12.69S23.08 3.2 16.02 3.2Zm0 23.25h-.01c-1.94 0-3.84-.52-5.5-1.5l-.4-.23-4.02 1.05 1.07-3.88-.26-.4a10.43 10.43 0 0 1-1.6-5.61c0-5.8 4.8-10.52 10.71-10.52 2.87 0 5.56 1.1 7.58 3.09a10.4 10.4 0 0 1 3.15 7.46c0 5.81-4.8 10.54-10.72 10.54Zm5.88-7.9c-.32-.16-1.9-.93-2.2-1.03-.3-.11-.52-.16-.74.16-.22.32-.85 1.03-1.04 1.25-.19.21-.38.24-.7.08-.32-.16-1.36-.5-2.6-1.59-.96-.85-1.61-1.9-1.8-2.22-.19-.32-.02-.5.14-.66.15-.14.32-.37.48-.56.16-.19.22-.32.32-.53.11-.21.06-.4-.03-.56-.08-.16-.74-1.77-1.01-2.42-.27-.64-.54-.55-.74-.56h-.64c-.22 0-.58.08-.88.4-.3.32-1.15 1.12-1.15 2.72 0 1.61 1.18 3.16 1.34 3.38.16.21 2.32 3.51 5.62 4.92.79.34 1.4.54 1.88.69.79.25 1.5.21 2.07.13.63-.09 1.9-.77 2.17-1.51.27-.75.27-1.38.19-1.51-.08-.14-.3-.22-.62-.38Z"/>
+        </svg>
+      </span>
+      <span>Забронировать в WhatsApp</span>
+    </a>
+  </div>
+
+  <div class="modal" id="excursionModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" onclick="closeExcursion(event)">
+    <div class="modal-card">
+      <button class="modal-close" type="button" aria-label="Закрыть" onclick="closeExcursion()">×</button>
+      <img id="modalImage" src="" alt="">
+      <div class="modal-body">
+        <div class="modal-kicker" id="modalDay"></div>
+        <h3 id="modalTitle"></h3>
+        <p id="modalText"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const pricePerPerson = 990000;
+    let people = 2;
+
+    const excursions = {
+      reedFlute: {
+        day: "День 2",
+        title: "Пещера Лужуань",
+        image: "https://img.modetour.com/eagle/photoimg/46428/Bfile/635636757655684879.jpg",
+        text: "По программе: осмотр сталактитовой пещеры к северо-западу от Гуйлиня. Место известно карстовым рельефом и залами вроде «Хрустального дворца». В сохранённой карточке для этой точки отдельное thumbnail-фото не указано, поэтому показано общее фото тура."
+      },
+      elephantHill: {
+        day: "День 2",
+        title: "Гора Слонового хобота",
+        image: "https://img.modetour.com/eagle/photoimg/10710/rfile/635633992610218827.jpg",
+        text: "По программе: гора в форме слона в месте слияния рек Ли и Таохуа. Туристы осматривают саму скалу и арку Шуйюэдун у воды."
+      },
+      diecai: {
+        day: "День 2",
+        title: "Гора Дяочайшань",
+        image: "https://img.modetour.com/eagle/photoimg/10718/rfile/636074613108352429.jpg",
+        text: "По программе: обзорная гора Гуйлиня с видами на город и карстовые холмы. Это один из дневных природных пунктов маршрута."
+      },
+      sanjie: {
+        day: "День 2",
+        title: "Шоу «Санскан»",
+        image: "https://img.modetour.com/eagle/photoimg/75185/rfile/638447160086887986.jpg",
+        text: "По программе: вечернее шоу с музыкой, светом и сценами на тему местной культуры. Оно включено после дневной экскурсионной части."
+      },
+      fubo: {
+        day: "День 3",
+        title: "Гора Фубошань",
+        image: "https://img.modetour.com/eagle/photoimg/10709/rfile/635633992198725291.jpg",
+        text: "По программе: одна из городских природных достопримечательностей Гуйлиня. Сюда заезжают ради вида на реку и скальные пейзажи."
+      },
+      dongxi: {
+        day: "День 3",
+        title: "Старинная улица Дунсисян",
+        image: "https://img.modetour.com/eagle/photoimg/52526/rfile/638443045609469755.jpg",
+        text: "По программе: старая улица Дунсисян с прогулочной зоной, магазинами, сувенирами и местной едой."
+      },
+      jingjiang: {
+        day: "День 3",
+        title: "Дворцовый комплекс Цзинцзян",
+        image: "https://img.modetour.com/eagle/photoimg/31673/rfile/635634008909211076.jpg",
+        text: "По программе: историческая достопримечательность Гуйлиня, где около 280 лет жили местные князья. Это культурный блок маршрута."
+      },
+      liRiver: {
+        day: "День 4",
+        title: "Круиз по реке Ли",
+        image: "https://img.modetour.com/eagle/photoimg/10717/rfile/635695314043981597.jpg",
+        text: "По программе: прогулка на судне по реке Ли среди карстовых гор. Это главный природный вид тура между Гуйлинем и Яншо."
+      },
+      westStreet: {
+        day: "День 4",
+        title: "Западная улица Сицзе",
+        image: "https://img.modetour.com/eagle/photoimg/84388/rfile/%EC%96%91%EC%82%AD%20%EC%84%9C%EC%96%91%EA%B1%B0%EB%A6%AC1.jpg",
+        text: "По программе: рынок/улица Сицзе в Яншо. Это оживлённое место для прогулки, кафе, лавок и сувениров после природной части дня."
+      },
+      minorityVillage: {
+        day: "День 5",
+        title: "Фольклорная деревня Шивайтаоюань",
+        image: "https://img.modetour.com/eagle/photoimg/46428/rfile/635636757517936637.jpg",
+        text: "По программе: Сэвайтаоюань, «утопия вне мира», с прогулкой на лодке и знакомством с фольклорной деревней."
+      },
+      sevenStar: {
+        day: "День 5",
+        title: "Парк Цисингун",
+        image: "https://img.modetour.com/eagle/photoimg/10719/rfile/635634009364357109.jpg",
+        text: "По программе: крупнейший парк Гуйлиня. Семь вершин напоминают форму Большой Медведицы; также упоминаются мост, холмы, пещера и каменные надписи."
+      },
+      pagodas: {
+        day: "День 5",
+        title: "Золотая и Серебряная пагоды",
+        image: "https://img.modetour.com/eagle/photoimg/31682/rfile/%EC%96%91%EA%B0%95%EC%82%AC%ED%98%B8%20%EA%B8%88%ED%83%91%EC%9D%80%ED%83%91.jpg",
+        text: "По программе: один из главных ориентиров Гуйлиня, где природный пейзаж сочетается с традиционной архитектурой. Особенно заметен вечером."
+      },
+      nightCruise: {
+        day: "Дополнительная экскурсия · $45",
+        title: "Ночной круиз по четырём озёрам и рекам",
+        image: "",
+        text: "По программе: ночной круиз по реке Ли, реке Таохуа и четырём озёрам с вечерней подсветкой и шоу с бакланами. Длительность около 60 минут; при отказе предусмотрено свободное посещение ночного рынка."
+      },
+      ruyiCable: {
+        day: "Дополнительная экскурсия · $65",
+        title: "Канатная дорога Жуи",
+        image: "",
+        text: "По программе: подъём к живописной горе Жуи, название которой по-китайски связано с пожеланием, чтобы всё исполнилось. Длительность около 120 минут; при отказе свободное время рядом с парковкой."
+      },
+      impressionShow: {
+        day: "Дополнительная экскурсия · $50",
+        title: "Шоу «Впечатление Лю Саньцзе»",
+        image: "",
+        text: "По программе: водное музыкальное шоу, поставленное режиссёром Чжан Имоу. Длительность около 60 минут; при отказе свободное время на Западной улице."
+      },
+      bodyMassage: {
+        day: "Дополнительная экскурсия · $35",
+        title: "Массаж всего тела",
+        image: "",
+        text: "По программе: массаж всего тела примерно на 1 час. Чаевые оплачиваются отдельно; при отказе можно ожидать группу в комнате отдыха массажного салона с чаем."
+      }
+    };
+
+    function changePeople(delta) {
+      people = Math.max(1, people + delta);
+      document.getElementById("peopleCount").textContent = people;
+      document.getElementById("totalPrice").textContent =
+        (people * pricePerPerson).toLocaleString("ru-RU") + " ₩";
+    }
+
+    function openExcursion(id) {
+      const item = excursions[id];
+      if (!item) return;
+
+      const modal = document.getElementById("excursionModal");
+      const image = document.getElementById("modalImage");
+      document.getElementById("modalDay").textContent = item.day;
+      document.getElementById("modalTitle").textContent = item.title;
+      document.getElementById("modalText").textContent = item.text;
+      if (item.image) {
+        image.src = item.image;
+        image.alt = item.title;
+        image.style.display = "block";
+      } else {
+        image.removeAttribute("src");
+        image.alt = "";
+        image.style.display = "none";
+      }
+      modal.classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeExcursion(event) {
+      if (event && event.target.id !== "excursionModal") return;
+      document.getElementById("excursionModal").classList.remove("open");
+      document.body.style.overflow = "";
+    }
+
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "Escape") closeExcursion();
+    });
+  </script>
+</body>
+</html>
