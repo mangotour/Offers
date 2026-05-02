@@ -501,54 +501,57 @@
       gap: 10px;
     }
 
-    .optional-grid {
-      display: grid;
+    .reels {
+      display: flex;
       gap: 12px;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      overflow-x: auto;
+      padding: 2px 2px 10px;
+      scrollbar-width: none;
     }
 
-    .optional-tour {
-      background: var(--surface-soft);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      cursor: pointer;
+    .reels::-webkit-scrollbar {
+      display: none;
+    }
+
+    .reel {
+      aspect-ratio: 9 / 16;
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+      display: block;
+      flex: 0 0 128px;
       overflow: hidden;
-      text-align: left;
+      position: relative;
+      text-decoration: none;
+    }
+
+    .reel img {
+      display: block;
+      height: 100%;
+      object-fit: cover;
       width: 100%;
     }
 
-    .optional-tour:hover {
-      border-color: #92d6bd;
-      box-shadow: 0 4px 14px rgba(22, 136, 95, 0.08);
+    .reel::before {
+      background: rgba(0, 0, 0, 0.22);
+      content: "";
+      inset: 0;
+      position: absolute;
     }
 
-    .optional-body {
-      padding: 12px;
-    }
-
-    .optional-title {
-      color: var(--text);
-      font-size: 15px;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-
-    .optional-meta {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .optional-price {
-      color: var(--accent-dark);
-      font-size: 14px;
-      font-weight: 800;
-      margin-top: 8px;
+    .reel::after {
+      border-bottom: 16px solid transparent;
+      border-left: 24px solid rgba(255, 255, 255, 0.88);
+      border-top: 16px solid transparent;
+      content: "";
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-40%, -50%);
     }
 
     @media (max-width: 760px) {
       .layout,
-      .features,
-      .optional-grid {
+      .features {
         grid-template-columns: 1fr;
       }
 
@@ -624,6 +627,7 @@
                 <button class="excursion" type="button" onclick="openExcursion('elephantHill')"><span>▣</span><span>Гора Слонового хобота</span></button>
                 <button class="excursion" type="button" onclick="openExcursion('diecai')"><span>▣</span><span>Гора Дяочайшань</span></button>
                 <button class="excursion" type="button" onclick="openExcursion('sanjie')"><span>▣</span><span>Вечернее шоу «Санскан»</span></button>
+                <button class="excursion" type="button" onclick="openExcursion('nightCruise')"><span>▣</span><span>Ночной круиз по четырём озёрам и рекам</span></button>
               </div>
             </div>
             <div class="day">
@@ -632,6 +636,8 @@
                 <button class="excursion" type="button" onclick="openExcursion('fubo')"><span>▣</span><span>Гора Фубошань</span></button>
                 <button class="excursion" type="button" onclick="openExcursion('dongxi')"><span>▣</span><span>Старинная улица Дунсисян</span></button>
                 <button class="excursion" type="button" onclick="openExcursion('jingjiang')"><span>▣</span><span>Дворцовый комплекс Цзинцзян</span></button>
+                <button class="excursion" type="button" onclick="openExcursion('ruyiCable')"><span>▣</span><span>Канатная дорога Жуи</span></button>
+                <button class="excursion" type="button" onclick="openExcursion('impressionShow')"><span>▣</span><span>Шоу «Впечатление Лю Саньцзе»</span></button>
               </div>
             </div>
             <div class="day">
@@ -675,51 +681,62 @@
           <div class="includes">
             <div class="include-row"><span class="mark">✓</span><div>Авиаперелет, проживание, питание, транспорт и входные билеты по программе.</div></div>
             <div class="include-row"><span class="mark">✓</span><div>Топливный сбор и базовая туристическая страховка.</div></div>
-            <div class="include-row"><span class="mark">!</span><div>Не включены личные расходы и дополнительные экскурсии по желанию.</div></div>
+            <div class="include-row"><span class="mark">!</span><div>Не включены личные расходы.</div></div>
           </div>
         </section>
 
-        <section class="section">
-          <h2>Дополнительные экскурсии по желанию</h2>
-          <div class="optional-grid">
-            <button class="optional-tour" type="button" onclick="openExcursion('nightCruise')">
-              <div class="optional-body">
-                <div class="optional-title">Ночной круиз по четырём озёрам и рекам</div>
-                <div class="optional-meta">60 минут · при отказе свободное время на ночном рынке</div>
-                <div class="optional-price">Взрослый / ребёнок: $45</div>
-              </div>
-            </button>
-
-            <button class="optional-tour" type="button" onclick="openExcursion('ruyiCable')">
-              <div class="optional-body">
-                <div class="optional-title">Канатная дорога Жуи</div>
-                <div class="optional-meta">120 минут · при отказе свободное время рядом с парковкой</div>
-                <div class="optional-price">Взрослый / ребёнок: $65</div>
-              </div>
-            </button>
-
-            <button class="optional-tour" type="button" onclick="openExcursion('impressionShow')">
-              <div class="optional-body">
-                <div class="optional-title">Шоу «Впечатление Лю Саньцзе»</div>
-                <div class="optional-meta">60 минут · при отказе свободное время на Западной улице</div>
-                <div class="optional-price">Взрослый / ребёнок: $50</div>
-              </div>
-            </button>
-
-            <button class="optional-tour" type="button" onclick="openExcursion('bodyMassage')">
-              <div class="optional-body">
-                <div class="optional-title">Массаж всего тела</div>
-                <div class="optional-meta">Около 1 часа · при отказе ожидание в комнате отдыха с чаем</div>
-                <div class="optional-price">Взрослый / ребёнок: $35</div>
-              </div>
-            </button>
+        <section class="section" aria-labelledby="reelsTitle">
+          <h2 id="reelsTitle">Отзывы наших туристов</h2>
+          <div class="reels">
+            <a class="reel" href="https://www.instagram.com/stories/highlights/18404039212150167/" target="_blank" rel="noopener noreferrer" aria-label="Открыть видео отзыв 1">
+              <img src="reel_1.png" alt="Видео отзыв туристов">
+            </a>
+            <a class="reel" href="https://www.instagram.com/stories/highlights/18073118810103351/" target="_blank" rel="noopener noreferrer" aria-label="Открыть видео отзыв 2">
+              <img src="reel_2.png" alt="Видео отзыв туристов">
+            </a>
+            <a class="reel" href="https://www.instagram.com/stories/highlights/18207003232316313/" target="_blank" rel="noopener noreferrer" aria-label="Открыть видео отзыв 3">
+              <img src="reel_3.png" alt="Видео отзыв туристов">
+            </a>
+            <a class="reel" href="https://www.instagram.com/stories/highlights/18098414977586720/" target="_blank" rel="noopener noreferrer" aria-label="Открыть видео отзыв 4">
+              <img src="reel_4.png" alt="Видео отзыв туристов">
+            </a>
           </div>
         </section>
       </article>
 
       <aside class="booking" aria-label="Бронирование">
-        <div class="price">990 000 ₩</div>
+        <div class="price">1 290 000 ₩</div>
         <div class="small">за человека</div>
+
+        <div class="flight">
+          <div class="flight-title">Рейс туда · 4 ночи / 6 дней</div>
+          <div class="flight-row">
+            <div>
+              <div class="time">24 мая, 22:20</div>
+              <div class="airport">Чеджу Эйр · вылет из Инчхона</div>
+            </div>
+            <div class="small">→</div>
+            <div style="text-align:right">
+              <div class="time">25 мая, 01:20</div>
+              <div class="airport">прилёт в Гуйлинь</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flight">
+          <div class="flight-title">Рейс обратно</div>
+          <div class="flight-row">
+            <div>
+              <div class="time">29 мая, 02:20</div>
+              <div class="airport">Чеджу Эйр · вылет из Гуйлиня</div>
+            </div>
+            <div class="small">→</div>
+            <div style="text-align:right">
+              <div class="time">29 мая, 07:15</div>
+              <div class="airport">прилёт в Инчхон</div>
+            </div>
+          </div>
+        </div>
 
         <div class="people">
           <button type="button" onclick="changePeople(-1)" aria-label="Уменьшить количество">-</button>
@@ -730,39 +747,7 @@
 
         <div class="total">
           <span class="small">Итого</span>
-          <strong id="totalPrice">1 980 000 ₩</strong>
-        </div>
-
-
-
-        <div class="flight">
-          <div class="flight-title">Вылет</div>
-          <div class="flight-row">
-            <div>
-              <div class="time">22:20</div>
-              <div class="airport">24 мая, Инчхон</div>
-            </div>
-            <div class="small">→</div>
-            <div style="text-align:right">
-              <div class="time">01:20</div>
-              <div class="airport">25 мая, Гуйлинь</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="flight">
-          <div class="flight-title">Возвращение</div>
-          <div class="flight-row">
-            <div>
-              <div class="time">02:20</div>
-              <div class="airport">29 мая, Гуйлинь</div>
-            </div>
-            <div class="small">→</div>
-            <div style="text-align:right">
-              <div class="time">07:15</div>
-              <div class="airport">29 мая, Инчхон</div>
-            </div>
-          </div>
+          <strong id="totalPrice">2 580 000 ₩</strong>
         </div>
 
       </aside>
@@ -793,7 +778,7 @@
   </div>
 
   <script>
-    const pricePerPerson = 990000;
+    const pricePerPerson = 1290000;
     let people = 2;
 
     const excursions = {
@@ -870,28 +855,22 @@
         text: "По программе: один из главных ориентиров Гуйлиня, где природный пейзаж сочетается с традиционной архитектурой. Особенно заметен вечером."
       },
       nightCruise: {
-        day: "Дополнительная экскурсия · $45",
+        day: "День 2",
         title: "Ночной круиз по четырём озёрам и рекам",
         image: "",
-        text: "По программе: ночной круиз по реке Ли, реке Таохуа и четырём озёрам с вечерней подсветкой и шоу с бакланами. Длительность около 60 минут; при отказе предусмотрено свободное посещение ночного рынка."
+        text: "По программе: ночной круиз по реке Ли, реке Таохуа и четырём озёрам с вечерней подсветкой и шоу с бакланами. Длительность около 60 минут."
       },
       ruyiCable: {
-        day: "Дополнительная экскурсия · $65",
+        day: "День 3",
         title: "Канатная дорога Жуи",
         image: "",
-        text: "По программе: подъём к живописной горе Жуи, название которой по-китайски связано с пожеланием, чтобы всё исполнилось. Длительность около 120 минут; при отказе свободное время рядом с парковкой."
+        text: "По программе: подъём к живописной горе Жуи, название которой по-китайски связано с пожеланием, чтобы всё исполнилось. Длительность около 120 минут."
       },
       impressionShow: {
-        day: "Дополнительная экскурсия · $50",
+        day: "День 3",
         title: "Шоу «Впечатление Лю Саньцзе»",
         image: "",
-        text: "По программе: водное музыкальное шоу, поставленное режиссёром Чжан Имоу. Длительность около 60 минут; при отказе свободное время на Западной улице."
-      },
-      bodyMassage: {
-        day: "Дополнительная экскурсия · $35",
-        title: "Массаж всего тела",
-        image: "",
-        text: "По программе: массаж всего тела примерно на 1 час. Чаевые оплачиваются отдельно; при отказе можно ожидать группу в комнате отдыха массажного салона с чаем."
+        text: "По программе: водное музыкальное шоу, поставленное режиссёром Чжан Имоу. Длительность около 60 минут."
       }
     };
 
