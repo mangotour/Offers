@@ -128,6 +128,7 @@
 
     .hero-slide img {
       aspect-ratio: 16 / 9;
+      cursor: zoom-in;
       display: block;
       height: auto;
       object-fit: cover;
@@ -592,6 +593,92 @@
       width: 38px;
     }
 
+    .gallery-modal {
+      align-items: center;
+      background: rgba(0, 0, 0, 0.92);
+      display: none;
+      inset: 0;
+      justify-content: center;
+      padding: 58px 18px 46px;
+      position: fixed;
+      z-index: 80;
+    }
+
+    .gallery-modal.open {
+      display: flex;
+    }
+
+    .gallery-image {
+      max-height: calc(100vh - 128px);
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    .gallery-close,
+    .gallery-control {
+      align-items: center;
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 999px;
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      position: absolute;
+    }
+
+    .gallery-close {
+      font-size: 28px;
+      height: 44px;
+      right: 18px;
+      top: 14px;
+      width: 44px;
+    }
+
+    .gallery-control {
+      font-size: 42px;
+      height: 52px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 52px;
+    }
+
+    .gallery-control.prev {
+      left: 18px;
+    }
+
+    .gallery-control.next {
+      right: 18px;
+    }
+
+    .gallery-counter {
+      background: rgba(0, 0, 0, 0.38);
+      border-radius: 999px;
+      bottom: 16px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      left: 50%;
+      padding: 7px 13px;
+      position: absolute;
+      transform: translateX(-50%);
+    }
+
+    @media (max-width: 760px) {
+      .gallery-control {
+        height: 44px;
+        width: 44px;
+      }
+
+      .gallery-control.prev {
+        left: 10px;
+      }
+
+      .gallery-control.next {
+        right: 10px;
+      }
+    }
+
     .hotel {
       border-bottom: 1px solid var(--line);
       padding: 12px 0;
@@ -972,10 +1059,20 @@
     </div>
   </div>
 
+  <div class="gallery-modal" id="galleryModal" role="dialog" aria-modal="true" aria-label="Галерея фотографий" onclick="closeGallery(event)">
+    <button class="gallery-close" type="button" aria-label="Закрыть галерею" onclick="closeGallery()">×</button>
+    <button class="gallery-control prev" type="button" aria-label="Предыдущее фото" onclick="changeGalleryImage(-1, event)">‹</button>
+    <img class="gallery-image" id="galleryImage" src="" alt="">
+    <button class="gallery-control next" type="button" aria-label="Следующее фото" onclick="changeGalleryImage(1, event)">›</button>
+    <div class="gallery-counter" id="galleryCounter"></div>
+  </div>
+
   <script>
     const pricePerPerson = 1290000;
     let people = 1;
     let heroSlide = 0;
+    let galleryIndex = 0;
+    let heroAutoTimer = null;
 
     function showHeroSlide(index) {
       const slides = Array.from(document.querySelectorAll(".hero-slide"));
@@ -994,6 +1091,84 @@
     function changeHeroSlide(delta) {
       showHeroSlide(heroSlide + delta);
     }
+
+    function startHeroAutoPlay() {
+      stopHeroAutoPlay();
+      heroAutoTimer = window.setInterval(() => {
+        changeHeroSlide(1);
+      }, 1500);
+    }
+
+    function stopHeroAutoPlay() {
+      if (heroAutoTimer) {
+        window.clearInterval(heroAutoTimer);
+        heroAutoTimer = null;
+      }
+    }
+
+    function getGalleryImages() {
+      return Array.from(document.querySelectorAll(".hero-slide img"));
+    }
+
+    function showGalleryImage(index) {
+      const images = getGalleryImages();
+      const galleryImage = document.getElementById("galleryImage");
+      const galleryCounter = document.getElementById("galleryCounter");
+      if (!images.length || !galleryImage || !galleryCounter) return;
+
+      galleryIndex = (index + images.length) % images.length;
+      const activeImage = images[galleryIndex];
+      galleryImage.src = activeImage.src;
+      galleryImage.alt = activeImage.alt;
+      galleryCounter.textContent = `${galleryIndex + 1} / ${images.length}`;
+      showHeroSlide(galleryIndex);
+    }
+
+    function openGallery(index) {
+      const modal = document.getElementById("galleryModal");
+      if (!modal) return;
+
+      showGalleryImage(index);
+      modal.classList.add("open");
+      document.body.style.overflow = "hidden";
+      stopHeroAutoPlay();
+    }
+
+    function closeGallery(event) {
+      if (event && event.target !== event.currentTarget) return;
+
+      const modal = document.getElementById("galleryModal");
+      if (!modal) return;
+
+      modal.classList.remove("open");
+      document.body.style.overflow = "";
+      startHeroAutoPlay();
+    }
+
+    function changeGalleryImage(delta, event) {
+      if (event) event.stopPropagation();
+      showGalleryImage(galleryIndex + delta);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      getGalleryImages().forEach((image, index) => {
+        image.addEventListener("click", () => openGallery(index));
+      });
+      startHeroAutoPlay();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      const modal = document.getElementById("galleryModal");
+      if (!modal || !modal.classList.contains("open")) return;
+
+      if (event.key === "Escape") {
+        closeGallery();
+      } else if (event.key === "ArrowLeft") {
+        changeGalleryImage(-1);
+      } else if (event.key === "ArrowRight") {
+        changeGalleryImage(1);
+      }
+    });
 
     const excursions = {
       reedFlute: {
