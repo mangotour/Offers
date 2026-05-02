@@ -60,12 +60,72 @@
       overflow: hidden;
     }
 
-    .hero img {
+    .hero-carousel {
+      position: relative;
+    }
+
+    .hero-slide {
+      display: none;
+    }
+
+    .hero-slide.active {
+      display: block;
+    }
+
+    .hero-slide img {
       aspect-ratio: 16 / 9;
       display: block;
       height: auto;
       object-fit: cover;
       width: 100%;
+    }
+
+    .hero-control {
+      align-items: center;
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(220, 229, 225, 0.9);
+      border-radius: 999px;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      font-size: 24px;
+      height: 38px;
+      justify-content: center;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 38px;
+    }
+
+    .hero-control.prev {
+      left: 12px;
+    }
+
+    .hero-control.next {
+      right: 12px;
+    }
+
+    .hero-dots {
+      bottom: 12px;
+      display: flex;
+      gap: 7px;
+      left: 50%;
+      position: absolute;
+      transform: translateX(-50%);
+    }
+
+    .hero-dot {
+      background: rgba(255, 255, 255, 0.72);
+      border: 0;
+      border-radius: 999px;
+      cursor: pointer;
+      height: 8px;
+      width: 8px;
+    }
+
+    .hero-dot.active {
+      background: var(--accent);
+      width: 22px;
     }
 
     .hero-body {
@@ -592,7 +652,64 @@
     <div class="layout">
       <article>
         <section class="hero">
-          <img src="https://img.modetour.com/eagle/photoimg/46428/Bfile/635636757655684879.jpg" alt="Гуйлинь, мост и горный пейзаж">
+          <div class="hero-carousel" aria-label="Фотографии тура">
+            <div class="hero-slide active">
+              <img src="carousel/01_image_132.jpg" alt="Гуйлинь, закат у горы Слонового хобота">
+            </div>
+            <div class="hero-slide">
+              <img src="carousel/02_image_6.jpg" alt="Вечерняя улица с китайскими фонарями">
+            </div>
+            <div class="hero-slide">
+              <img src="carousel/03_image_97.jpg" alt="Река и карстовые горы Гуйлиня">
+            </div>
+            <div class="hero-slide">
+              <img src="carousel/04_image_91.jpg" alt="Парк у озера в Гуйлине">
+            </div>
+            <div class="hero-slide">
+              <img src="carousel/06_image_66.jpg" alt="Карстовый пейзаж Яншо">
+            </div>
+            <div class="hero-slide">
+              <img src="carousel/07_image_111.jpg" alt="Река в тумане у горы Слонового хобота">
+            </div>
+            <div class="hero-slide">
+              <img src="carousel/10_image_106.jpg" alt="Мост на закате в Гуйлине">
+            </div>
+            <div class="hero-slide">
+              <img src="carousel/14_image_147.jpg" alt="Гора Слонового хобота у воды">
+            </div>
+            <div class="hero-slide">
+              <img src="carousel/16_image_129.jpg" alt="Танцевальное шоу в национальных костюмах">
+            </div>
+            <div class="hero-slide">
+              <img src="carousel/17_image_38.jpg" alt="Павильон у озера в Гуйлине">
+            </div>
+            <div class="hero-slide">
+              <img src="carousel/18_image_114.jpg" alt="Храмовые крыши среди зелени">
+            </div>
+            <div class="hero-slide">
+              <img src="carousel/19_image_5.jpg" alt="Вид на город Яншо и карстовые холмы">
+            </div>
+            <div class="hero-slide">
+              <img src="carousel/20_image_120.jpg" alt="Площадь с традиционным зданием">
+            </div>
+            <button class="hero-control prev" type="button" onclick="changeHeroSlide(-1)" aria-label="Предыдущее фото">‹</button>
+            <button class="hero-control next" type="button" onclick="changeHeroSlide(1)" aria-label="Следующее фото">›</button>
+            <div class="hero-dots" aria-label="Выбор фотографии">
+              <button class="hero-dot active" type="button" onclick="showHeroSlide(0)" aria-label="Фото 1"></button>
+              <button class="hero-dot" type="button" onclick="showHeroSlide(1)" aria-label="Фото 2"></button>
+              <button class="hero-dot" type="button" onclick="showHeroSlide(2)" aria-label="Фото 3"></button>
+              <button class="hero-dot" type="button" onclick="showHeroSlide(3)" aria-label="Фото 4"></button>
+              <button class="hero-dot" type="button" onclick="showHeroSlide(4)" aria-label="Фото 5"></button>
+              <button class="hero-dot" type="button" onclick="showHeroSlide(5)" aria-label="Фото 6"></button>
+              <button class="hero-dot" type="button" onclick="showHeroSlide(6)" aria-label="Фото 7"></button>
+              <button class="hero-dot" type="button" onclick="showHeroSlide(7)" aria-label="Фото 8"></button>
+              <button class="hero-dot" type="button" onclick="showHeroSlide(8)" aria-label="Фото 9"></button>
+              <button class="hero-dot" type="button" onclick="showHeroSlide(9)" aria-label="Фото 10"></button>
+              <button class="hero-dot" type="button" onclick="showHeroSlide(10)" aria-label="Фото 11"></button>
+              <button class="hero-dot" type="button" onclick="showHeroSlide(11)" aria-label="Фото 12"></button>
+              <button class="hero-dot" type="button" onclick="showHeroSlide(12)" aria-label="Фото 13"></button>
+            </div>
+          </div>
           <div class="hero-body">
             <div class="tags">
               <span class="tag active">Прямой рейс</span>
@@ -740,14 +857,14 @@
 
         <div class="people">
           <button type="button" onclick="changePeople(-1)" aria-label="Уменьшить количество">-</button>
-          <div class="count" id="peopleCount">2</div>
+          <div class="count" id="peopleCount">1</div>
           <button type="button" onclick="changePeople(1)" aria-label="Увеличить количество">+</button>
           <div class="small">человека</div>
         </div>
 
         <div class="total">
           <span class="small">Итого</span>
-          <strong id="totalPrice">2 580 000 ₩</strong>
+          <strong id="totalPrice">1 290 000 ₩</strong>
         </div>
 
       </aside>
@@ -779,14 +896,33 @@
 
   <script>
     const pricePerPerson = 1290000;
-    let people = 2;
+    let people = 1;
+    let heroSlide = 0;
+
+    function showHeroSlide(index) {
+      const slides = Array.from(document.querySelectorAll(".hero-slide"));
+      const dots = Array.from(document.querySelectorAll(".hero-dot"));
+      if (!slides.length) return;
+
+      heroSlide = (index + slides.length) % slides.length;
+      slides.forEach((slide, slideIndex) => {
+        slide.classList.toggle("active", slideIndex === heroSlide);
+      });
+      dots.forEach((dot, dotIndex) => {
+        dot.classList.toggle("active", dotIndex === heroSlide);
+      });
+    }
+
+    function changeHeroSlide(delta) {
+      showHeroSlide(heroSlide + delta);
+    }
 
     const excursions = {
       reedFlute: {
         day: "День 2",
         title: "Пещера Лужуань",
         image: "https://img.modetour.com/eagle/photoimg/46428/Bfile/635636757655684879.jpg",
-        text: "По программе: осмотр сталактитовой пещеры к северо-западу от Гуйлиня. Место известно карстовым рельефом и залами вроде «Хрустального дворца». В сохранённой карточке для этой точки отдельное thumbnail-фото не указано, поэтому показано общее фото тура."
+        text: "По программе: осмотр сталактитовой пещеры к северо-западу от Гуйлиня. Место известно карстовым рельефом, подсвеченными залами и атмосферой подземного дворца."
       },
       elephantHill: {
         day: "День 2",
