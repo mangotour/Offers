@@ -1,0 +1,871 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Тур - шаблон предложения</title>
+  <style>
+    :root {
+      --bg: #f4f6f5;
+      --surface: #ffffff;
+      --surface-soft: #eef4f1;
+      --text: #17211d;
+      --muted: #66726d;
+      --line: #dce5e1;
+      --accent: #16885f;
+      --accent-dark: #0e6547;
+      --danger: #b94646;
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      line-height: 1.5;
+    }
+
+    .site-header {
+      align-items: center;
+      background: rgba(255, 255, 255, 0.96);
+      border-bottom: 1px solid var(--line);
+      box-shadow: 0 2px 12px rgba(23, 33, 29, 0.06);
+      display: flex;
+      justify-content: space-between;
+      left: 0;
+      min-height: 66px;
+      padding: 10px max(18px, calc((100vw - 1060px) / 2 + 18px));
+      position: sticky;
+      right: 0;
+      top: 0;
+      z-index: 30;
+    }
+
+    .site-logo { display: block; height: 42px; object-fit: contain; width: auto; }
+    .social-links { display: flex; gap: 8px; }
+
+    .social-link {
+      align-items: center;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(23, 33, 29, 0.12);
+      color: #fff;
+      display: flex;
+      height: 44px;
+      justify-content: center;
+      text-decoration: none;
+      width: 44px;
+    }
+
+    .social-link svg { display: block; height: 28px; width: 28px; }
+    .social-link.instagram { background: linear-gradient(45deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888); }
+    .social-link.facebook { background: #1877f2; }
+
+    .page { margin: 0 auto; max-width: 1060px; padding: 24px 18px 44px; }
+    .layout { align-items: start; display: grid; gap: 22px; grid-template-columns: minmax(0, 1fr) 340px; }
+
+    .hero,
+    .booking,
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .hero { overflow: hidden; }
+    .hero-carousel { position: relative; }
+    .hero-slide { display: none; }
+    .hero-slide.active { display: block; }
+
+    .hero-slide img {
+      aspect-ratio: 16 / 9;
+      cursor: zoom-in;
+      display: block;
+      height: auto;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .hero-control {
+      align-items: center;
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(220, 229, 225, 0.9);
+      border-radius: 999px;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      font-size: 24px;
+      height: 38px;
+      justify-content: center;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 38px;
+    }
+
+    .hero-control.prev { left: 12px; }
+    .hero-control.next { right: 12px; }
+
+    .hero-dots {
+      bottom: 12px;
+      display: flex;
+      gap: 7px;
+      left: 50%;
+      position: absolute;
+      transform: translateX(-50%);
+    }
+
+    .hero-dot {
+      background: rgba(255, 255, 255, 0.72);
+      border: 0;
+      border-radius: 999px;
+      cursor: pointer;
+      height: 8px;
+      width: 8px;
+    }
+
+    .hero-dot.active { background: var(--accent); width: 22px; }
+    .hero-body { padding: 16px; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .tag {
+      background: var(--surface-soft);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 12px;
+      padding: 4px 10px;
+    }
+
+    .tag.active {
+      background: #def2ea;
+      border-color: #92d6bd;
+      color: var(--accent-dark);
+      font-weight: 600;
+    }
+
+    h1 { font-size: 24px; font-weight: 700; letter-spacing: 0; line-height: 1.25; margin-bottom: 10px; }
+    .summary { color: var(--muted); font-size: 15px; max-width: 720px; }
+
+    .booking {
+      padding: 18px;
+      position: sticky;
+      top: 16px;
+    }
+
+    .price { font-size: 32px; font-weight: 750; margin: 4px 0; }
+    .small { color: var(--muted); font-size: 13px; }
+
+    .people { align-items: center; display: flex; gap: 10px; margin: 14px 0; }
+    .people button {
+      align-items: center;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      font-size: 18px;
+      height: 34px;
+      justify-content: center;
+      width: 34px;
+    }
+
+    .count { font-size: 16px; font-weight: 700; min-width: 24px; text-align: center; }
+    .total { align-items: center; border-top: 1px solid var(--line); display: flex; justify-content: space-between; margin-top: 12px; padding-top: 14px; }
+    .total strong { font-size: 22px; }
+
+    .primary {
+      align-items: center;
+      background: #25D366;
+      border: 0;
+      border-radius: 12px;
+      box-shadow: 0 10px 22px rgba(37, 211, 102, 0.24);
+      color: white;
+      cursor: pointer;
+      display: flex;
+      font-size: 15px;
+      font-weight: 800;
+      gap: 9px;
+      justify-content: center;
+      letter-spacing: 0.1px;
+      margin: 16px 0 8px;
+      min-height: 50px;
+      text-decoration: none;
+      width: 100%;
+    }
+
+    .whatsapp-icon {
+      align-items: center;
+      background: rgba(255, 255, 255, 0.18);
+      border-radius: 999px;
+      display: inline-flex;
+      flex: 0 0 auto;
+      height: 28px;
+      justify-content: center;
+      width: 28px;
+    }
+
+    .whatsapp-icon svg { display: block; height: 18px; width: 18px; }
+    .mobile-whatsapp { display: none; }
+
+    .flight {
+      background: var(--surface-soft);
+      border-radius: var(--radius);
+      margin-top: 12px;
+      padding: 12px;
+    }
+
+    .flight-title { color: var(--muted); font-size: 12px; margin-bottom: 6px; text-transform: uppercase; }
+    .flight-row { align-items: center; display: flex; gap: 12px; justify-content: space-between; }
+    .time { font-size: 18px; font-weight: 700; }
+    .airport { color: var(--muted); font-size: 12px; }
+
+    .section { margin-top: 20px; padding: 20px; }
+    .section h2 { border-bottom: 1px solid var(--line); font-size: 18px; margin-bottom: 16px; padding-bottom: 10px; }
+    .features { display: grid; gap: 10px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .feature, .hotel, .include-row { align-items: start; display: flex; gap: 10px; }
+
+    .video-grid { display: grid; gap: 14px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .video-frame { aspect-ratio: 16 / 9; background: #000; border-radius: 12px; overflow: hidden; }
+    .video-frame iframe { border: 0; display: block; height: 100%; width: 100%; }
+
+    .mark {
+      align-items: center;
+      background: #def2ea;
+      border-radius: 999px;
+      color: var(--accent-dark);
+      display: flex;
+      flex: 0 0 auto;
+      font-size: 12px;
+      font-weight: 800;
+      height: 24px;
+      justify-content: center;
+      width: 24px;
+    }
+
+    .route { border-left: 2px solid var(--line); margin-left: 8px; padding-left: 18px; }
+    .day { margin-bottom: 18px; position: relative; }
+    .day:last-child { margin-bottom: 0; }
+    .day::before { background: var(--accent); border-radius: 999px; content: ""; height: 10px; left: -24px; position: absolute; top: 7px; width: 10px; }
+    .day h3 { color: var(--accent-dark); font-size: 15px; margin-bottom: 4px; }
+    .day p, .hotel p { color: var(--muted); font-size: 14px; white-space: pre-line; }
+
+    .day-carousel {
+      border-radius: 10px;
+      margin-top: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .day-photo { display: none; }
+    .day-photo.active { display: block; }
+    .day-photo img {
+      aspect-ratio: 16 / 9;
+      background: var(--surface-soft);
+      display: block;
+      height: auto;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .day-photo-control {
+      align-items: center;
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(220, 229, 225, 0.9);
+      border-radius: 999px;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      font-size: 21px;
+      height: 34px;
+      justify-content: center;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 34px;
+    }
+
+    .day-photo-control.prev { left: 10px; }
+    .day-photo-control.next { right: 10px; }
+
+    .modal,
+    .gallery-modal {
+      align-items: center;
+      display: none;
+      inset: 0;
+      justify-content: center;
+      position: fixed;
+    }
+
+    .modal { background: rgba(12, 20, 17, 0.58); padding: 18px; z-index: 70; }
+    .modal.open, .gallery-modal.open { display: flex; }
+    .modal-card { background: var(--surface); border-radius: 10px; box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28); max-height: min(760px, 92vh); max-width: 620px; overflow: auto; position: relative; width: 100%; }
+    .modal-card img { aspect-ratio: 16 / 9; display: block; object-fit: cover; width: 100%; }
+    .modal-body { padding: 18px; }
+    .modal-kicker { color: var(--accent-dark); font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+    .modal-body h3 { font-size: 22px; line-height: 1.25; margin-bottom: 10px; }
+    .modal-body p { color: var(--muted); font-size: 15px; }
+    .modal-close { align-items: center; background: rgba(255, 255, 255, 0.94); border: 1px solid var(--line); border-radius: 999px; cursor: pointer; display: flex; font-size: 22px; height: 38px; justify-content: center; position: absolute; right: 12px; top: 12px; width: 38px; }
+
+    .gallery-modal { background: rgba(0, 0, 0, 0.92); padding: 58px 18px 46px; z-index: 80; }
+    .gallery-image { max-height: calc(100vh - 128px); max-width: 100%; object-fit: contain; }
+    .gallery-close, .gallery-control { align-items: center; background: rgba(255, 255, 255, 0.16); border: 1px solid rgba(255, 255, 255, 0.22); border-radius: 999px; color: #fff; cursor: pointer; display: flex; justify-content: center; position: absolute; }
+    .gallery-close { font-size: 28px; height: 44px; right: 18px; top: 14px; width: 44px; }
+    .gallery-control { font-size: 42px; height: 52px; top: 50%; transform: translateY(-50%); width: 52px; }
+    .gallery-control.prev { left: 18px; }
+    .gallery-control.next { right: 18px; }
+    .gallery-counter { background: rgba(0, 0, 0, 0.38); border-radius: 999px; bottom: 16px; color: #fff; font-size: 14px; font-weight: 700; left: 50%; padding: 7px 13px; position: absolute; transform: translateX(-50%); }
+
+    .hotel { border-bottom: 1px solid var(--line); padding: 12px 0; }
+    .hotel:last-child { border-bottom: 0; padding-bottom: 0; }
+    .hotel-photo { background: linear-gradient(135deg, #bee9da, #88cdb3); border-radius: var(--radius); flex: 0 0 auto; height: 58px; object-fit: cover; width: 72px; }
+    .includes { display: grid; gap: 10px; }
+    .reels { display: flex; gap: 12px; overflow-x: auto; padding: 2px 2px 10px; scrollbar-width: none; }
+    .reels::-webkit-scrollbar { display: none; }
+    .reel { aspect-ratio: 9 / 16; border-radius: 12px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12); display: block; flex: 0 0 128px; overflow: hidden; position: relative; text-decoration: none; }
+    .reel img { display: block; height: 100%; object-fit: cover; width: 100%; }
+    .reel::before { background: rgba(0, 0, 0, 0.22); content: ""; inset: 0; position: absolute; }
+    .reel::after { border-bottom: 16px solid transparent; border-left: 24px solid rgba(255, 255, 255, 0.88); border-top: 16px solid transparent; content: ""; left: 50%; position: absolute; top: 50%; transform: translate(-40%, -50%); }
+
+    @media (max-width: 760px) {
+      .layout, .features, .video-grid { grid-template-columns: 1fr; }
+      .page { padding-bottom: 96px; }
+      .booking { position: static; }
+      h1 { font-size: 21px; }
+      .mobile-whatsapp { background: rgba(255, 255, 255, 0.94); border-top: 1px solid var(--line); bottom: 0; box-shadow: 0 -8px 26px rgba(0, 0, 0, 0.08); display: block; left: 0; padding: 10px 14px calc(10px + env(safe-area-inset-bottom)); position: fixed; right: 0; z-index: 15; }
+      .mobile-whatsapp .primary { margin: 0 auto; max-width: 520px; }
+      .gallery-control { height: 44px; width: 44px; }
+      .gallery-control.prev { left: 10px; }
+      .gallery-control.next { right: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <img id="logo" src="logo.png" alt="Mango Tour" class="site-logo">
+    <nav class="social-links" aria-label="Социальные сети">
+      <a class="social-link instagram" id="instagramLink" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+      </a>
+      <a class="social-link facebook" id="facebookLink" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+        <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M21.95 5.005l-3.306-.004c-3.206 0-5.277 2.124-5.277 5.415v2.815h-3.328v3.95h3.328v10.584h4.091v-10.584h3.332l.532-3.95h-3.864v-2.316c0-1.12.31-1.884 1.916-1.884h2.054v-3.535c-.354-.047-1.574-.153-2.992-.153z"/></svg>
+      </a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <div class="layout">
+      <article>
+        <section class="hero">
+          <div class="hero-carousel" aria-label="Фотографии тура">
+            <div id="heroSlides"></div>
+            <button class="hero-control prev" type="button" onclick="changeHeroSlide(-1)" aria-label="Предыдущее фото">‹</button>
+            <button class="hero-control next" type="button" onclick="changeHeroSlide(1)" aria-label="Следующее фото">›</button>
+            <div class="hero-dots" id="heroDots" aria-label="Выбор фотографии"></div>
+          </div>
+          <div class="hero-body">
+            <div class="tags" id="tags"></div>
+            <h1 id="tourTitle"></h1>
+            <p class="summary" id="tourSummary"></p>
+          </div>
+        </section>
+
+        <section class="section" id="videoSection" aria-labelledby="videoTitle">
+          <h2 id="videoTitle"></h2>
+          <div class="video-grid" id="videos"></div>
+        </section>
+
+        <section class="section">
+          <h2>Что входит в тур</h2>
+          <div class="features" id="features"></div>
+        </section>
+
+        <section class="section">
+          <h2>Маршрут</h2>
+          <div class="route" id="route"></div>
+        </section>
+
+        <section class="section">
+          <h2>Отели</h2>
+          <div id="hotels"></div>
+        </section>
+
+        <section class="section">
+          <h2>Включено и не включено</h2>
+          <div class="includes" id="includes"></div>
+        </section>
+
+        <section class="section" id="reelsSection" aria-labelledby="reelsTitle">
+          <h2 id="reelsTitle">Отзывы наших туристов</h2>
+          <div class="reels" id="reels"></div>
+        </section>
+      </article>
+
+      <aside class="booking" aria-label="Бронирование">
+        <div class="price" id="price"></div>
+        <div class="small" id="priceNote"></div>
+        <div id="flights"></div>
+
+        <div class="people">
+          <button type="button" onclick="changePeople(-1)" aria-label="Уменьшить количество">-</button>
+          <div class="count" id="peopleCount">1</div>
+          <button type="button" onclick="changePeople(1)" aria-label="Увеличить количество">+</button>
+          <div class="small">человека</div>
+        </div>
+
+        <div class="total">
+          <span class="small">Итого</span>
+          <strong id="totalPrice"></strong>
+        </div>
+
+        <a class="primary" id="whatsappMain" target="_blank" rel="noopener" aria-label="Написать в WhatsApp для бронирования тура">
+          <span class="whatsapp-icon" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M16.02 3.2C8.96 3.2 3.22 8.89 3.22 15.88c0 2.24.6 4.42 1.73 6.34L3.1 28.8l6.78-1.77a12.9 12.9 0 0 0 6.13 1.56h.01c7.06 0 12.8-5.69 12.8-12.69S23.08 3.2 16.02 3.2Zm0 23.25h-.01c-1.94 0-3.84-.52-5.5-1.5l-.4-.23-4.02 1.05 1.07-3.88-.26-.4a10.43 10.43 0 0 1-1.6-5.61c0-5.8 4.8-10.52 10.71-10.52 2.87 0 5.56 1.1 7.58 3.09a10.4 10.4 0 0 1 3.15 7.46c0 5.81-4.8 10.54-10.72 10.54Zm5.88-7.9c-.32-.16-1.9-.93-2.2-1.03-.3-.11-.52-.16-.74.16-.22.32-.85 1.03-1.04 1.25-.19.21-.38.24-.7.08-.32-.16-1.36-.5-2.6-1.59-.96-.85-1.61-1.9-1.8-2.22-.19-.32-.02-.5.14-.66.15-.14.32-.37.48-.56.16-.19.22-.32.32-.53.11-.21.06-.4-.03-.56-.08-.16-.74-1.77-1.01-2.42-.27-.64-.54-.55-.74-.56h-.64c-.22 0-.58.08-.88.4-.3.32-1.15 1.12-1.15 2.72 0 1.61 1.18 3.16 1.34 3.38.16.21 2.32 3.51 5.62 4.92.79.34 1.4.54 1.88.69.79.25 1.5.21 2.07.13.63-.09 1.9-.77 2.17-1.51.27-.75.27-1.38.19-1.51-.08-.14-.3-.22-.62-.38Z"/></svg>
+          </span>
+          <span id="whatsappLabel"></span>
+        </a>
+      </aside>
+    </div>
+  </main>
+
+  <div class="mobile-whatsapp" aria-label="Быстрая связь в WhatsApp">
+    <a class="primary" id="whatsappMobile" target="_blank" rel="noopener" aria-label="Написать в WhatsApp для бронирования тура">
+      <span class="whatsapp-icon" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M16.02 3.2C8.96 3.2 3.22 8.89 3.22 15.88c0 2.24.6 4.42 1.73 6.34L3.1 28.8l6.78-1.77a12.9 12.9 0 0 0 6.13 1.56h.01c7.06 0 12.8-5.69 12.8-12.69S23.08 3.2 16.02 3.2Zm0 23.25h-.01c-1.94 0-3.84-.52-5.5-1.5l-.4-.23-4.02 1.05 1.07-3.88-.26-.4a10.43 10.43 0 0 1-1.6-5.61c0-5.8 4.8-10.52 10.71-10.52 2.87 0 5.56 1.1 7.58 3.09a10.4 10.4 0 0 1 3.15 7.46c0 5.81-4.8 10.54-10.72 10.54Zm5.88-7.9c-.32-.16-1.9-.93-2.2-1.03-.3-.11-.52-.16-.74.16-.22.32-.85 1.03-1.04 1.25-.19.21-.38.24-.7.08-.32-.16-1.36-.5-2.6-1.59-.96-.85-1.61-1.9-1.8-2.22-.19-.32-.02-.5.14-.66.15-.14.32-.37.48-.56.16-.19.22-.32.32-.53.11-.21.06-.4-.03-.56-.08-.16-.74-1.77-1.01-2.42-.27-.64-.54-.55-.74-.56h-.64c-.22 0-.58.08-.88.4-.3.32-1.15 1.12-1.15 2.72 0 1.61 1.18 3.16 1.34 3.38.16.21 2.32 3.51 5.62 4.92.79.34 1.4.54 1.88.69.79.25 1.5.21 2.07.13.63-.09 1.9-.77 2.17-1.51.27-.75.27-1.38.19-1.51-.08-.14-.3-.22-.62-.38Z"/></svg>
+      </span>
+      <span id="whatsappMobileLabel"></span>
+    </a>
+  </div>
+
+  <div class="gallery-modal" id="galleryModal" role="dialog" aria-modal="true" aria-label="Галерея фотографий" onclick="closeGallery(event)">
+    <button class="gallery-close" type="button" aria-label="Закрыть галерею" onclick="closeGallery()">×</button>
+    <button class="gallery-control prev" type="button" aria-label="Предыдущее фото" onclick="changeGalleryImage(-1, event)">‹</button>
+    <img class="gallery-image" id="galleryImage" src="" alt="">
+    <button class="gallery-control next" type="button" aria-label="Следующее фото" onclick="changeGalleryImage(1, event)">›</button>
+    <div class="gallery-counter" id="galleryCounter"></div>
+  </div>
+
+  <script>
+    /*
+      Как использовать шаблон:
+      1. Скопируйте этот файл и переименуйте под новый тур.
+      2. Положите фото рядом с HTML или в папку carousel/.
+      3. Меняйте только объект tourData ниже. Верстку и скрипт трогать не нужно.
+      4. Для скрытия блока оставьте массив пустым: videos: [] или reels: [].
+    */
+    const tourData = {
+      "pageTitle": "Осака: свободное путешествие - Mango Tour",
+      "logoPath": "logo.png",
+      "brandName": "Mango Tour",
+      "social": {
+            "instagram": "https://www.instagram.com/mango.tour_?utm_source=qr&igsh=MWoyZDZ6NnZrcXg3cA==",
+            "facebook": "https://www.facebook.com/share/1FHwMCpMCN/?mibextid=wwXIfr"
+      },
+      "whatsapp": {
+            "phone": "821099752550",
+            "buttonText": "Забронировать в WhatsApp",
+            "message": "Здравствуйте, интересует тур в Осаку на 18.05.2026 - 21.05.2026."
+      },
+      "title": "Осака: свободное путешествие",
+      "summary": "Полностью свободное путешествие в Осаку в формате \"авиаперелет и отель\" без обязательных экскурсий и гидов График планируется туристом самостоятельно с учетом рекомендаций от агентства",
+      "tags": [
+            "18.05.2026 - 21.05.2026 (4 дня / 3 ночи)"
+      ],
+      "pricePerPerson": 655000,
+      "currency": "₩",
+      "priceNote": "за человека",
+      "photos": [
+            {
+                  "src": "assets/osaka-svobodnoe-puteshestvie-18-05-2026-21-05-2026-4-dnya-3-nochi/hero/01-6e756a1b.jpg",
+                  "alt": "Осака: свободное путешествие фото 1"
+            },
+            {
+                  "src": "assets/osaka-svobodnoe-puteshestvie-18-05-2026-21-05-2026-4-dnya-3-nochi/hero/02-0518cbaa.jpg",
+                  "alt": "Осака: свободное путешествие фото 2"
+            },
+            {
+                  "src": "assets/osaka-svobodnoe-puteshestvie-18-05-2026-21-05-2026-4-dnya-3-nochi/hero/03-a14f1fc4.jpg",
+                  "alt": "Осака: свободное путешествие фото 3"
+            },
+            {
+                  "src": "assets/osaka-svobodnoe-puteshestvie-18-05-2026-21-05-2026-4-dnya-3-nochi/hero/04-800a63d9.jpg",
+                  "alt": "Осака: свободное путешествие фото 4"
+            },
+            {
+                  "src": "assets/osaka-svobodnoe-puteshestvie-18-05-2026-21-05-2026-4-dnya-3-nochi/hero/05-3c21c4f0.jpg",
+                  "alt": "Осака: свободное путешествие фото 5"
+            }
+      ],
+      "videosTitle": "Видео о направлении",
+      "videos": [],
+      "features": [],
+      "flights": [
+            {
+                  "title": "Рейс туда",
+                  "fromTime": "18.05, 16:10",
+                  "fromText": "Jin Air (LJ239), в пути 1 час 55 минут · вылет из Инчхона (ICN)",
+                  "toTime": "18.05, 18:05",
+                  "toText": "прилёт в Осаку (KIX)"
+            },
+            {
+                  "title": "Рейс обратно",
+                  "fromTime": "21.05, 11:10",
+                  "fromText": "Jin Air (LJ242), в пути 1 час 50 минут · вылет из Осаки (KIX)",
+                  "toTime": "21.05, 13:00",
+                  "toText": "прилёт в Инчхон (ICN)"
+            },
+            {
+                  "title": "Входит:",
+                  "fromTime": "",
+                  "fromText": "",
+                  "toTime": "",
+                  "toText": ""
+            },
+            {
+                  "title": "Прямой перелет туда и обратно с включенным регистрируемым багажом до 15 кг на каждого человека",
+                  "fromTime": "",
+                  "fromText": "",
+                  "toTime": "",
+                  "toText": ""
+            },
+            {
+                  "title": "Проживание в 3-звездочном отеле в номере категории Standard Twin",
+                  "fromTime": "",
+                  "fromText": "",
+                  "toTime": "",
+                  "toText": ""
+            },
+            {
+                  "title": "Туристическая страховка от компании KB на сумму 100 млн вон, а также топливные сборы и обязательные налоги",
+                  "fromTime": "",
+                  "fromText": "",
+                  "toTime": "",
+                  "toText": ""
+            }
+      ],
+      "route": [
+            {
+                  "title": "День 1",
+                  "text": "Прибытие и размещение: Самостоятельная регистрация в аэропорту Инчхон (рекомендуется прибыть за 2.5 - 3 часа до вылета) По прилету в аэропорт Кансай - переезд в отель на общественном транспорте и заселение после 15:00 (если приедете раньше, можно оставить багаж)
+Дотонбори и Синсайбаси (свободное время): Насладитесь лучшим шопингом и местной уличной едой в Осаке среди ярких неоновых огней",
+                  "images": [
+                        {
+                              "src": "assets/osaka-svobodnoe-puteshestvie-18-05-2026-21-05-2026-4-dnya-3-nochi/days/01/01-dd40a446.jpg",
+                              "alt": "День 1 фото 1"
+                        },
+                        {
+                              "src": "assets/osaka-svobodnoe-puteshestvie-18-05-2026-21-05-2026-4-dnya-3-nochi/days/01/02-f8d89393.jpg",
+                              "alt": "День 1 фото 2"
+                        },
+                        {
+                              "src": "assets/osaka-svobodnoe-puteshestvie-18-05-2026-21-05-2026-4-dnya-3-nochi/days/01/03-4125a107.jpg",
+                              "alt": "День 1 фото 3"
+                        },
+                        {
+                              "src": "assets/osaka-svobodnoe-puteshestvie-18-05-2026-21-05-2026-4-dnya-3-nochi/days/01/04-2fd14766.jpg",
+                              "alt": "День 1 фото 4"
+                        },
+                        {
+                              "src": "assets/osaka-svobodnoe-puteshestvie-18-05-2026-21-05-2026-4-dnya-3-nochi/days/01/05-d11a0d09.jpg",
+                              "alt": "День 1 фото 5"
+                        }
+                  ]
+            },
+            {
+                  "title": "День 2",
+                  "text": "Harukas 300 (рекомендуемый маршрут): Посещение смотровой площадки Abeno Harukas высотой 300 метров для панорамного обзора мегаполиса На 1-12 этажах комплекса можно насладиться шопингом, посетить различные рестораны и художественный музей",
+                  "images": [
+                        {
+                              "src": "assets/osaka-svobodnoe-puteshestvie-18-05-2026-21-05-2026-4-dnya-3-nochi/days/02/01-45c7260b.jpg",
+                              "alt": "День 2 фото 1"
+                        },
+                        {
+                              "src": "assets/osaka-svobodnoe-puteshestvie-18-05-2026-21-05-2026-4-dnya-3-nochi/days/02/02-cd51630c.jpg",
+                              "alt": "День 2 фото 2"
+                        },
+                        {
+                              "src": "assets/osaka-svobodnoe-puteshestvie-18-05-2026-21-05-2026-4-dnya-3-nochi/days/02/03-ee52ddbf.jpg",
+                              "alt": "День 2 фото 3"
+                        },
+                        {
+                              "src": "assets/osaka-svobodnoe-puteshestvie-18-05-2026-21-05-2026-4-dnya-3-nochi/days/02/04-0c25be90.jpg",
+                              "alt": "День 2 фото 4"
+                        },
+                        {
+                              "src": "assets/osaka-svobodnoe-puteshestvie-18-05-2026-21-05-2026-4-dnya-3-nochi/days/02/05-c2bf8df1.jpg",
+                              "alt": "День 2 фото 5"
+                        }
+                  ]
+            },
+            {
+                  "title": "День 3",
+                  "text": "Смотровая площадка Umeda Sky Building (рекомендуемый маршрут): Насладитесь живописным видом на центр Осаки со знаменитой смотровой площадки \"Висячие сады\" в районе Умеда",
+                  "images": [
+                        {
+                              "src": "assets/osaka-svobodnoe-puteshestvie-18-05-2026-21-05-2026-4-dnya-3-nochi/days/03/01-c3b42926.jpg",
+                              "alt": "День 3 фото 1"
+                        },
+                        {
+                              "src": "assets/osaka-svobodnoe-puteshestvie-18-05-2026-21-05-2026-4-dnya-3-nochi/days/03/02-924d7d5e.jpg",
+                              "alt": "День 3 фото 2"
+                        },
+                        {
+                              "src": "assets/osaka-svobodnoe-puteshestvie-18-05-2026-21-05-2026-4-dnya-3-nochi/days/03/03-07726d22.jpg",
+                              "alt": "День 3 фото 3"
+                        }
+                  ]
+            },
+            {
+                  "title": "День 4",
+                  "text": "Осакский замок (рекомендуемый маршрут): Посещение знаменитой достопримечательности, основанной в эпоху Эдо, а также прогулка по прилегающему историческому парку и музею
+Отъезд: Самостоятельный трансфер в аэропорт Кансай на общественном транспорте (необходимо прибыть за 2 часа до вылета) и вылет в Инчхон",
+                  "images": [
+                        {
+                              "src": "assets/osaka-svobodnoe-puteshestvie-18-05-2026-21-05-2026-4-dnya-3-nochi/days/04/01-e6dfa975.jpg",
+                              "alt": "День 4 фото 1"
+                        },
+                        {
+                              "src": "assets/osaka-svobodnoe-puteshestvie-18-05-2026-21-05-2026-4-dnya-3-nochi/days/04/02-875cbf34.jpg",
+                              "alt": "День 4 фото 2"
+                        },
+                        {
+                              "src": "assets/osaka-svobodnoe-puteshestvie-18-05-2026-21-05-2026-4-dnya-3-nochi/days/04/03-79d94490.jpg",
+                              "alt": "День 4 фото 3"
+                        },
+                        {
+                              "src": "assets/osaka-svobodnoe-puteshestvie-18-05-2026-21-05-2026-4-dnya-3-nochi/days/04/04-32053070.jpg",
+                              "alt": "День 4 фото 4"
+                        }
+                  ]
+            }
+      ],
+      "hotels": [
+            {
+                  "name": "Smile Hotel Premium Osaka Higashi Shinsaibashi",
+                  "description": "3 звезды, современный дизайн-отель Удобно расположен всего в 5 минутах ходьбы от выхода 6 станции метро Нагахорибаси",
+                  "image": "assets/osaka-svobodnoe-puteshestvie-18-05-2026-21-05-2026-4-dnya-3-nochi/hotels/01-e541c09f.jpg"
+            }
+      ],
+      "includes": [
+            {
+                  "mark": "✓",
+                  "text": "Авиабилеты, багаж 15 кг, проживание в отеле, топливные сборы, налоги, базовая туристическая страховка KB"
+            },
+            {
+                  "mark": "!",
+                  "text": "Не включено: любое питание на протяжении маршрута, личные расходы, налог на проживание (оплачивается отдельно при заселении), услуги гида/водителя и индивидуальный транспорт (все перемещения осуществляются самостоятельно)"
+            }
+      ],
+      "reels": []
+};
+
+    let people = 1;
+    let heroSlide = 0;
+    let galleryIndex = 0;
+    let heroAutoTimer = null;
+
+    const money = (value) => value.toLocaleString("ru-RU") + " " + tourData.currency;
+    const el = (id) => document.getElementById(id);
+
+    function setText(id, value) {
+      const node = el(id);
+      if (node) node.textContent = value;
+    }
+
+    function whatsappUrl() {
+      return `https://wa.me/${tourData.whatsapp.phone}?text=${encodeURIComponent(tourData.whatsapp.message)}`;
+    }
+
+    function renderPage() {
+      document.title = tourData.pageTitle;
+      el("logo").src = tourData.logoPath;
+      el("logo").alt = tourData.brandName;
+      el("instagramLink").href = tourData.social.instagram;
+      el("facebookLink").href = tourData.social.facebook;
+
+      setText("tourTitle", tourData.title);
+      setText("tourSummary", tourData.summary);
+      setText("price", money(tourData.pricePerPerson));
+      setText("priceNote", tourData.priceNote);
+      setText("whatsappLabel", tourData.whatsapp.buttonText);
+      setText("whatsappMobileLabel", tourData.whatsapp.buttonText);
+      el("whatsappMain").href = whatsappUrl();
+      el("whatsappMobile").href = whatsappUrl();
+
+      el("tags").innerHTML = tourData.tags.map((tag, index) => `<span class="tag ${index === 0 ? "active" : ""}">${tag}</span>`).join("");
+      el("heroSlides").innerHTML = tourData.photos.map((photo, index) => `
+        <div class="hero-slide ${index === 0 ? "active" : ""}">
+          <img src="${photo.src}" alt="${photo.alt}">
+        </div>
+      `).join("");
+      el("heroDots").innerHTML = tourData.photos.map((_, index) => `
+        <button class="hero-dot ${index === 0 ? "active" : ""}" type="button" onclick="showHeroSlide(${index})" aria-label="Фото ${index + 1}"></button>
+      `).join("");
+
+      setText("videoTitle", tourData.videosTitle);
+      el("videos").innerHTML = tourData.videos.map((video) => `
+        <div class="video-frame">
+          <iframe src="https://www.youtube.com/embed/${video.youtubeId}" title="${video.title}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+      `).join("");
+      el("videoSection").style.display = tourData.videos.length ? "" : "none";
+
+      el("features").innerHTML = tourData.features.map((feature) => `<div class="feature"><span class="mark">✓</span><div>${feature}</div></div>`).join("");
+      el("flights").innerHTML = tourData.flights.map((flight) => `
+        <div class="flight">
+          <div class="flight-title">${flight.title}</div>
+          <div class="flight-row">
+            <div><div class="time">${flight.fromTime}</div><div class="airport">${flight.fromText}</div></div>
+            <div class="small">→</div>
+            <div style="text-align:right"><div class="time">${flight.toTime}</div><div class="airport">${flight.toText}</div></div>
+          </div>
+        </div>
+      `).join("");
+
+      el("route").innerHTML = tourData.route.map((day, dayIndex) => `
+        <div class="day">
+          <h3>${day.title}</h3>
+          ${day.text ? `<p>${day.text}</p>` : ""}
+          ${renderDayCarousel(day, dayIndex)}
+        </div>
+      `).join("");
+
+      el("hotels").innerHTML = tourData.hotels.map((hotel) => `
+        <div class="hotel">
+          ${hotel.image ? `<img class="hotel-photo" src="${hotel.image}" alt="${hotel.name}">` : `<div class="hotel-photo"></div>`}
+          <div><strong>${hotel.name}</strong><p>${hotel.description}</p></div>
+        </div>
+      `).join("");
+
+      el("includes").innerHTML = tourData.includes.map((item) => `<div class="include-row"><span class="mark">${item.mark}</span><div>${item.text}</div></div>`).join("");
+      el("reels").innerHTML = tourData.reels.map((reel, index) => `
+        <a class="reel" href="${reel.link}" target="_blank" rel="noopener noreferrer" aria-label="Открыть видео отзыв ${index + 1}">
+          <img src="${reel.thumbnail}" alt="${reel.alt}">
+        </a>
+      `).join("");
+      el("reelsSection").style.display = tourData.reels.length ? "" : "none";
+
+      updateTotal();
+      bindGallery();
+    }
+
+    function renderDayCarousel(day, dayIndex) {
+      if (!day.images || !day.images.length) return "";
+      return `
+        <div class="day-carousel" data-day-carousel="${dayIndex}">
+          ${day.images.map((image, imageIndex) => `
+            <div class="day-photo ${imageIndex === 0 ? "active" : ""}">
+              <img src="${image.src}" alt="${image.alt || day.title}">
+            </div>
+          `).join("")}
+          ${day.images.length > 1 ? `
+            <button class="day-photo-control prev" type="button" onclick="changeDayPhoto(${dayIndex}, -1)" aria-label="Предыдущее фото дня">‹</button>
+            <button class="day-photo-control next" type="button" onclick="changeDayPhoto(${dayIndex}, 1)" aria-label="Следующее фото дня">›</button>
+          ` : ""}
+        </div>
+      `;
+    }
+
+    function changeDayPhoto(dayIndex, delta) {
+      const carousel = document.querySelector(`[data-day-carousel="${dayIndex}"]`);
+      if (!carousel) return;
+      const photos = Array.from(carousel.querySelectorAll(".day-photo"));
+      const current = photos.findIndex((photo) => photo.classList.contains("active"));
+      const next = (current + delta + photos.length) % photos.length;
+      photos.forEach((photo, index) => photo.classList.toggle("active", index === next));
+    }
+
+    function showHeroSlide(index) {
+      const slides = Array.from(document.querySelectorAll(".hero-slide"));
+      const dots = Array.from(document.querySelectorAll(".hero-dot"));
+      if (!slides.length) return;
+
+      heroSlide = (index + slides.length) % slides.length;
+      slides.forEach((slide, slideIndex) => slide.classList.toggle("active", slideIndex === heroSlide));
+      dots.forEach((dot, dotIndex) => dot.classList.toggle("active", dotIndex === heroSlide));
+    }
+
+    function changeHeroSlide(delta) {
+      showHeroSlide(heroSlide + delta);
+    }
+
+    function startHeroAutoPlay() {
+      stopHeroAutoPlay();
+      heroAutoTimer = window.setInterval(() => changeHeroSlide(1), 1500);
+    }
+
+    function stopHeroAutoPlay() {
+      if (heroAutoTimer) {
+        window.clearInterval(heroAutoTimer);
+        heroAutoTimer = null;
+      }
+    }
+
+    function getGalleryImages() {
+      return Array.from(document.querySelectorAll(".hero-slide img"));
+    }
+
+    function bindGallery() {
+      getGalleryImages().forEach((image, index) => image.addEventListener("click", () => openGallery(index)));
+    }
+
+    function showGalleryImage(index) {
+      const images = getGalleryImages();
+      if (!images.length) return;
+
+      galleryIndex = (index + images.length) % images.length;
+      const activeImage = images[galleryIndex];
+      el("galleryImage").src = activeImage.src;
+      el("galleryImage").alt = activeImage.alt;
+      setText("galleryCounter", `${galleryIndex + 1} / ${images.length}`);
+      showHeroSlide(galleryIndex);
+    }
+
+    function openGallery(index) {
+      showGalleryImage(index);
+      el("galleryModal").classList.add("open");
+      document.body.style.overflow = "hidden";
+      stopHeroAutoPlay();
+    }
+
+    function closeGallery(event) {
+      if (event && event.target !== event.currentTarget) return;
+      el("galleryModal").classList.remove("open");
+      document.body.style.overflow = "";
+      startHeroAutoPlay();
+    }
+
+    function changeGalleryImage(delta, event) {
+      if (event) event.stopPropagation();
+      showGalleryImage(galleryIndex + delta);
+    }
+
+    function updateTotal() {
+      setText("peopleCount", people);
+      setText("totalPrice", money(people * tourData.pricePerPerson));
+    }
+
+    function changePeople(delta) {
+      people = Math.max(1, people + delta);
+      updateTotal();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderPage();
+      startHeroAutoPlay();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      const gallery = el("galleryModal");
+      if (event.key === "Escape") {
+        if (gallery.classList.contains("open")) closeGallery();
+      }
+      if (!gallery.classList.contains("open")) return;
+      if (event.key === "ArrowLeft") changeGalleryImage(-1);
+      if (event.key === "ArrowRight") changeGalleryImage(1);
+    });
+  </script>
+</body>
+</html>
