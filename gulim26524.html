@@ -437,6 +437,26 @@
       gap: 10px;
     }
 
+    .video-grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .video-frame {
+      aspect-ratio: 9 / 16;
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .video-frame iframe {
+      border: 0;
+      display: block;
+      height: 100%;
+      width: 100%;
+    }
+
     .mark {
       align-items: center;
       background: #def2ea;
@@ -768,6 +788,10 @@
         font-size: 21px;
       }
 
+      .video-grid {
+        grid-template-columns: 1fr;
+      }
+
       .mobile-whatsapp {
         background: rgba(255, 255, 255, 0.94);
         border-top: 1px solid var(--line);
@@ -873,6 +897,30 @@
             </div>
             <h1>Гуйлинь и Яншо: горы, река Ли и вечернее шоу</h1>
             <p class="summary">Насыщенный тур по самым красивым местам Гуйлиня: карстовые пики, круиз по реке Ли, отели 4-5 звезд, массаж ног и вечерняя программа без обязательного шопинга.</p>
+          </div>
+        </section>
+
+        <section class="section" aria-labelledby="videoTitle">
+          <h2 id="videoTitle">Видео о Гуйлине</h2>
+          <div class="video-grid">
+            <div class="video-frame">
+              <iframe
+                src="https://www.youtube.com/embed/sizdCPiXfMY"
+                title="Гордость Китая - горы Гуйлинь"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen>
+              </iframe>
+            </div>
+            <div class="video-frame">
+              <iframe
+                src="https://www.youtube.com/embed/0phsD6hUo2g"
+                title="Guilin's Dreamscape: Karst Mountains & Rice Terraces Unveiled"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen>
+              </iframe>
+            </div>
           </div>
         </section>
 
