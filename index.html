@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="MANGO TOUR - контакты для связи.">
+  <meta name="facebook-domain-verification" content="3w75vi90evq6qy6n2qv70ib7u6i2ne" />
+  <meta property="og:title" content="MANGO TOUR">
+  <meta property="og:description" content="Наши контакты.">
+  <title>MANGO TOUR</title>
+  <style>
+    :root {
+      --bg: #fff7ed;
+      --surface: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --accent: #f97316;
+      --accent-dark: #c2410c;
+      --line: #fed7aa;
+      --shadow: 0 24px 80px rgba(124, 45, 18, 0.14);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(249, 115, 22, 0.18), transparent 34%),
+        linear-gradient(135deg, var(--bg), #ffffff 58%, #ffedd5);
+    }
+
+    main {
+      width: min(560px, 100%);
+      padding: clamp(28px, 6vw, 56px);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .logo {
+      width: 76px;
+      height: 76px;
+      margin: 0 auto 22px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #ffffff;
+      background: var(--accent);
+      font-size: 34px;
+      font-weight: 800;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--accent-dark);
+      font-size: clamp(42px, 10vw, 72px);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 28px 0 16px;
+      font-size: 24px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .contacts {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .contacts a {
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--text);
+      background: var(--surface);
+      font-weight: 700;
+      text-decoration: none;
+      transition: border-color 160ms ease, color 160ms ease, transform 160ms ease;
+    }
+
+    .contacts a:hover {
+      border-color: var(--accent);
+      color: var(--accent-dark);
+      transform: translateY(-1px);
+    }
+
+    footer {
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="logo" aria-hidden="true">M</div>
+    <h1>MANGO TOUR</h1>
+
+    <h2>Наши контакты</h2>
+    <ul class="contacts">
+      <li><a href="https://wa.me/821099752550" target="_blank" rel="noopener noreferrer">WhatsApp: +82 10 9975 2550</a></li>
+      <li><a href="https://www.instagram.com/mango.tour_?utm_source=qr&amp;igsh=MWoyZDZ6NnZrcXg3cA==" target="_blank" rel="noopener noreferrer">Instagram: @mango.tour_</a></li>
+      <li><a href="https://www.facebook.com/share/1FHwMCpMCN/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+    </ul>
+
+    <footer>mangotour.top</footer>
+  </main>
+</body>
+</html>
