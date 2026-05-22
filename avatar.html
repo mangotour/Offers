@@ -39,7 +39,7 @@
       display: flex;
       justify-content: space-between;
       left: 0;
-      min-height: 66px;
+      min-height: 84px;
       padding: 10px max(18px, calc((100vw - 1060px) / 2 + 18px));
       position: sticky;
       right: 0;
@@ -49,9 +49,20 @@
 
     .site-logo {
       display: block;
-      height: 42px;
+      height: 63px;
       object-fit: contain;
       width: auto;
+    }
+
+    .site-title {
+      color: #f28c18;
+      font-size: 20px;
+      font-weight: 900;
+      left: 50%;
+      letter-spacing: 0;
+      position: absolute;
+      transform: translateX(-50%);
+      white-space: nowrap;
     }
 
     .social-links {
@@ -851,6 +862,7 @@
 <body>
   <header class="site-header">
     <img src="logo.png" alt="Mango Tour" class="site-logo">
+    <div class="site-title">МАНГО ТУР</div>
     <nav class="social-links" aria-label="Социальные сети Mango Tour">
       <a class="social-link instagram" href="https://www.instagram.com/mango.tour_?utm_source=qr&igsh=MWoyZDZ6NnZrcXg3cA==" target="_blank" rel="noopener noreferrer" aria-label="Mango Tour в Instagram">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
