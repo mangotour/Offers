@@ -116,6 +116,7 @@
 
     .hero-carousel {
       position: relative;
+      touch-action: pan-y;
     }
 
     .hero-slide {
@@ -651,6 +652,7 @@
       justify-content: center;
       padding: 58px 18px 46px;
       position: fixed;
+      touch-action: pan-y;
       z-index: 80;
     }
 
@@ -1024,7 +1026,7 @@
             <div class="hotel-photo"></div>
             <div>
               <strong>Предполагаемые отели в Чжанцзяцзе</strong>
-              <p>Размещение в одном из указанных отелей или в отеле подобного уровня по программе тура.</p>
+              <p>Blue Bay Hotel, Zhangjiajie Huachen International Hotel, Best Western Plus или отель подобного уровня по программе тура.</p>
             </div>
           </div>
         </section>
@@ -1040,19 +1042,19 @@
 
         <section class="section" aria-labelledby="videosTitle">
           <h2 id="videosTitle">Видео о туре</h2>
-          <div class="reels">
-            <a class="reel" href="https://www.youtube.com/shorts/4GrPYRwzFWM" target="_blank" rel="noopener noreferrer" aria-label="Открыть видео о туре 1">
-              <img src="https://img.youtube.com/vi/4GrPYRwzFWM/hqdefault.jpg" alt="Видео о туре">
-            </a>
-            <a class="reel" href="https://www.youtube.com/shorts/ombiYtCQ1BQ" target="_blank" rel="noopener noreferrer" aria-label="Открыть видео о туре 2">
-              <img src="https://img.youtube.com/vi/ombiYtCQ1BQ/hqdefault.jpg" alt="Видео о туре">
-            </a>
-            <a class="reel" href="https://www.youtube.com/shorts/-wksAXfruUw?feature=share" target="_blank" rel="noopener noreferrer" aria-label="Открыть видео о туре 3">
-              <img src="https://img.youtube.com/vi/-wksAXfruUw/hqdefault.jpg" alt="Видео о туре">
-            </a>
-            <a class="reel" href="https://www.youtube.com/shorts/pdLK1Li6QnA" target="_blank" rel="noopener noreferrer" aria-label="Открыть видео о туре 4">
-              <img src="https://img.youtube.com/vi/pdLK1Li6QnA/hqdefault.jpg" alt="Видео о туре">
-            </a>
+          <div class="video-grid">
+            <div class="video-frame">
+              <iframe src="https://www.youtube.com/embed/4GrPYRwzFWM" title="Видео о туре 1" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <div class="video-frame">
+              <iframe src="https://www.youtube.com/embed/ombiYtCQ1BQ" title="Видео о туре 2" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <div class="video-frame">
+              <iframe src="https://www.youtube.com/embed/-wksAXfruUw" title="Видео о туре 3" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <div class="video-frame">
+              <iframe src="https://www.youtube.com/embed/pdLK1Li6QnA" title="Видео о туре 4" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
           </div>
         </section>
 
@@ -1171,6 +1173,7 @@
     let heroSlide = 0;
     let galleryIndex = 0;
     let heroAutoTimer = null;
+    let suppressHeroClick = false;
 
     function showHeroSlide(index) {
       const slides = Array.from(document.querySelectorAll(".hero-slide"));
@@ -1248,9 +1251,67 @@
       showGalleryImage(galleryIndex + delta);
     }
 
+    function setupSwipe(element, onSwipe) {
+      if (!element) return;
+
+      let startX = 0;
+      let startY = 0;
+      let lastX = 0;
+      let lastY = 0;
+      let isTouching = false;
+
+      element.addEventListener("touchstart", (event) => {
+        if (event.touches.length !== 1) return;
+
+        startX = event.touches[0].clientX;
+        startY = event.touches[0].clientY;
+        lastX = startX;
+        lastY = startY;
+        isTouching = true;
+      }, { passive: true });
+
+      element.addEventListener("touchmove", (event) => {
+        if (!isTouching || event.touches.length !== 1) return;
+
+        lastX = event.touches[0].clientX;
+        lastY = event.touches[0].clientY;
+      }, { passive: true });
+
+      element.addEventListener("touchend", () => {
+        if (!isTouching) return;
+
+        const deltaX = lastX - startX;
+        const deltaY = lastY - startY;
+        const isHorizontalSwipe = Math.abs(deltaX) > 45 && Math.abs(deltaX) > Math.abs(deltaY) * 1.4;
+        isTouching = false;
+
+        if (!isHorizontalSwipe) return;
+
+        onSwipe(deltaX < 0 ? 1 : -1);
+      });
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
+      const heroCarousel = document.querySelector(".hero-carousel");
+      setupSwipe(heroCarousel, (delta) => {
+        suppressHeroClick = true;
+        stopHeroAutoPlay();
+        changeHeroSlide(delta);
+        startHeroAutoPlay();
+        window.setTimeout(() => {
+          suppressHeroClick = false;
+        }, 350);
+      });
+
+      setupSwipe(document.getElementById("galleryModal"), (delta) => {
+        changeGalleryImage(delta);
+      });
+
       getGalleryImages().forEach((image, index) => {
-        image.addEventListener("click", () => openGallery(index));
+        image.addEventListener("click", () => {
+          if (suppressHeroClick) return;
+          openGallery(index);
+        });
       });
       startHeroAutoPlay();
     });
