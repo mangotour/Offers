@@ -1,0 +1,1515 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Аватар: Чжанцзяцзе 4 ночи / 5 дней</title>
+  <style>
+    :root {
+      --bg: #f4f6f5;
+      --surface: #ffffff;
+      --surface-soft: #eef4f1;
+      --text: #17211d;
+      --muted: #66726d;
+      --line: #dce5e1;
+      --accent: #16885f;
+      --accent-dark: #0e6547;
+      --danger: #b94646;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      line-height: 1.5;
+    }
+
+    .site-header {
+      align-items: center;
+      background: rgba(255, 255, 255, 0.96);
+      border-bottom: 1px solid var(--line);
+      box-shadow: 0 2px 12px rgba(23, 33, 29, 0.06);
+      display: flex;
+      justify-content: space-between;
+      left: 0;
+      min-height: 84px;
+      padding: 10px max(18px, calc((100vw - 1060px) / 2 + 18px));
+      position: sticky;
+      right: 0;
+      top: 0;
+      z-index: 30;
+    }
+
+    .site-logo {
+      display: block;
+      height: 63px;
+      object-fit: contain;
+      width: auto;
+    }
+
+    .site-title {
+      color: #f28c18;
+      font-size: 20px;
+      font-weight: 900;
+      left: 50%;
+      letter-spacing: 0;
+      position: absolute;
+      transform: translateX(-50%);
+      white-space: nowrap;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 8px;
+    }
+
+    .social-link {
+      align-items: center;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(23, 33, 29, 0.12);
+      color: #fff;
+      display: flex;
+      height: 44px;
+      justify-content: center;
+      text-decoration: none;
+      width: 44px;
+    }
+
+    .social-link svg {
+      display: block;
+      height: 28px;
+      width: 28px;
+    }
+
+    .social-link.instagram {
+      background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    }
+
+    .social-link.facebook {
+      background: #1877f2;
+    }
+
+    .page {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 24px 18px 44px;
+    }
+
+    .breadcrumbs {
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      font-size: 13px;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .layout {
+      align-items: start;
+      display: grid;
+      gap: 22px;
+      grid-template-columns: minmax(0, 1fr) 340px;
+    }
+
+    .hero {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .hero-carousel {
+      position: relative;
+      touch-action: pan-y;
+    }
+
+    .hero-slide {
+      display: none;
+    }
+
+    .hero-slide.active {
+      display: block;
+    }
+
+    .hero-slide img {
+      aspect-ratio: 16 / 9;
+      cursor: zoom-in;
+      display: block;
+      height: auto;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .hero-control {
+      align-items: center;
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(220, 229, 225, 0.9);
+      border-radius: 999px;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      font-size: 24px;
+      height: 38px;
+      justify-content: center;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 38px;
+    }
+
+    .hero-control.prev {
+      left: 12px;
+    }
+
+    .hero-control.next {
+      right: 12px;
+    }
+
+    .hero-dots {
+      bottom: 12px;
+      display: flex;
+      gap: 7px;
+      left: 50%;
+      position: absolute;
+      transform: translateX(-50%);
+    }
+
+    .hero-dot {
+      background: rgba(255, 255, 255, 0.72);
+      border: 0;
+      border-radius: 999px;
+      cursor: pointer;
+      height: 8px;
+      width: 8px;
+    }
+
+    .hero-dot.active {
+      background: var(--accent);
+      width: 22px;
+    }
+
+    .hero-body {
+      padding: 16px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .tag {
+      background: var(--surface-soft);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 12px;
+      padding: 4px 10px;
+    }
+
+    .tag.active {
+      background: #def2ea;
+      border-color: #92d6bd;
+      color: var(--accent-dark);
+      font-weight: 600;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 0;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+
+    .summary {
+      color: var(--muted);
+      font-size: 15px;
+      max-width: 720px;
+    }
+
+    .hero-flights {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 14px;
+    }
+
+    .hero-flight {
+      background: var(--surface-soft);
+      border-radius: var(--radius);
+      padding: 12px;
+    }
+
+    .hero-flight-title {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .hero-flight-time {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .hero-flight-text {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .booking {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      position: sticky;
+      top: 16px;
+    }
+
+    .old-price {
+      color: var(--muted);
+      font-size: 14px;
+      text-decoration: line-through;
+    }
+
+    .badge {
+      background: #fdecec;
+      border-radius: 5px;
+      color: var(--danger);
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      margin-left: 6px;
+      padding: 2px 7px;
+      text-decoration: none;
+    }
+
+    .price {
+      font-size: 32px;
+      font-weight: 750;
+      margin: 4px 0;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .variant {
+      background: var(--surface-soft);
+      border-radius: var(--radius);
+      color: var(--muted);
+      font-size: 13px;
+      margin: 14px 0;
+      padding: 10px;
+    }
+
+    .people {
+      align-items: center;
+      display: flex;
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .people button {
+      align-items: center;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      font-size: 18px;
+      height: 34px;
+      justify-content: center;
+      width: 34px;
+    }
+
+    .count {
+      font-size: 16px;
+      font-weight: 700;
+      min-width: 24px;
+      text-align: center;
+    }
+
+    .total {
+      align-items: center;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      margin-top: 12px;
+      padding-top: 14px;
+    }
+
+    .total strong {
+      font-size: 22px;
+    }
+
+    .primary,
+    .secondary {
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: 15px;
+      min-height: 44px;
+      width: 100%;
+    }
+
+    .primary {
+      align-items: center;
+      background: #25D366;
+      border: 0;
+      border-radius: 12px;
+      box-shadow: 0 10px 22px rgba(37, 211, 102, 0.24);
+      color: white;
+      display: flex;
+      font-weight: 800;
+      gap: 9px;
+      justify-content: center;
+      letter-spacing: 0.1px;
+      margin: 16px 0 8px;
+      min-height: 50px;
+      text-decoration: none;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+    }
+
+    .primary:hover {
+      background: #1fbd5a;
+      box-shadow: 0 12px 26px rgba(37, 211, 102, 0.32);
+      transform: translateY(-1px);
+    }
+
+    .primary:active {
+      transform: translateY(0);
+    }
+
+    .whatsapp-icon {
+      align-items: center;
+      background: rgba(255, 255, 255, 0.18);
+      border-radius: 999px;
+      display: inline-flex;
+      flex: 0 0 auto;
+      height: 28px;
+      justify-content: center;
+      width: 28px;
+    }
+
+    .whatsapp-icon svg {
+      display: block;
+      height: 18px;
+      width: 18px;
+    }
+
+    .mobile-whatsapp {
+      display: none;
+    }
+
+    .secondary {
+      background: white;
+      border: 1px solid var(--line);
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .flight {
+      background: var(--surface-soft);
+      border-radius: var(--radius);
+      margin-top: 12px;
+      padding: 12px;
+    }
+
+    .flight-title {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .flight-row {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .time {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .airport {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      margin-top: 20px;
+      padding: 20px;
+    }
+
+    .section h2 {
+      border-bottom: 1px solid var(--line);
+      font-size: 18px;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+    }
+
+    .features {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .feature,
+    .hotel,
+    .include-row {
+      align-items: start;
+      display: flex;
+      gap: 10px;
+    }
+
+    .video-grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .video-frame {
+      aspect-ratio: 9 / 16;
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .video-frame iframe {
+      border: 0;
+      display: block;
+      height: 100%;
+      width: 100%;
+    }
+
+    .mark {
+      align-items: center;
+      background: #def2ea;
+      border-radius: 999px;
+      color: var(--accent-dark);
+      display: flex;
+      flex: 0 0 auto;
+      font-size: 12px;
+      font-weight: 800;
+      height: 24px;
+      justify-content: center;
+      width: 24px;
+    }
+
+    .route {
+      border-left: 2px solid var(--line);
+      margin-left: 8px;
+      padding-left: 18px;
+    }
+
+    .route-note {
+      background: var(--surface-soft);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+      margin-bottom: 16px;
+      padding: 12px 14px;
+    }
+
+    .day {
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    .day:last-child {
+      margin-bottom: 0;
+    }
+
+    .day::before {
+      background: var(--accent);
+      border-radius: 999px;
+      content: "";
+      height: 10px;
+      left: -24px;
+      position: absolute;
+      top: 7px;
+      width: 10px;
+    }
+
+    .day h3 {
+      color: var(--accent-dark);
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .day p,
+    .hotel p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .excursions {
+      display: grid;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .excursion {
+      align-items: center;
+      background: var(--surface-soft);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      font: inherit;
+      gap: 10px;
+      min-height: 42px;
+      padding: 9px 11px;
+      text-align: left;
+      width: 100%;
+    }
+
+    .excursion:hover {
+      border-color: #92d6bd;
+      box-shadow: 0 4px 14px rgba(22, 136, 95, 0.08);
+    }
+
+    .excursion span:first-child {
+      flex: 0 0 auto;
+      font-size: 18px;
+      width: 22px;
+    }
+
+    .modal {
+      align-items: center;
+      background: rgba(12, 20, 17, 0.58);
+      display: none;
+      inset: 0;
+      justify-content: center;
+      padding: 18px;
+      position: fixed;
+      z-index: 20;
+    }
+
+    .modal.open {
+      display: flex;
+    }
+
+    .modal-card {
+      background: var(--surface);
+      border-radius: 10px;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+      max-height: min(760px, 92vh);
+      max-width: 620px;
+      overflow: auto;
+      position: relative;
+      width: 100%;
+    }
+
+    .modal-card img {
+      aspect-ratio: 16 / 9;
+      display: block;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .modal-body {
+      padding: 18px;
+    }
+
+    .modal-kicker {
+      color: var(--accent-dark);
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .modal-body h3 {
+      font-size: 22px;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+
+    .modal-body p {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .modal-close {
+      align-items: center;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      cursor: pointer;
+      display: flex;
+      font-size: 22px;
+      height: 38px;
+      justify-content: center;
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      width: 38px;
+    }
+
+    .gallery-modal {
+      align-items: center;
+      background: rgba(0, 0, 0, 0.92);
+      display: none;
+      inset: 0;
+      justify-content: center;
+      padding: 58px 18px 46px;
+      position: fixed;
+      touch-action: pan-y;
+      z-index: 80;
+    }
+
+    .gallery-modal.open {
+      display: flex;
+    }
+
+    .gallery-image {
+      max-height: calc(100vh - 128px);
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    .gallery-close,
+    .gallery-control {
+      align-items: center;
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 999px;
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      position: absolute;
+    }
+
+    .gallery-close {
+      font-size: 28px;
+      height: 44px;
+      right: 18px;
+      top: 14px;
+      width: 44px;
+    }
+
+    .gallery-control {
+      font-size: 42px;
+      height: 52px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 52px;
+    }
+
+    .gallery-control.prev {
+      left: 18px;
+    }
+
+    .gallery-control.next {
+      right: 18px;
+    }
+
+    .gallery-counter {
+      background: rgba(0, 0, 0, 0.38);
+      border-radius: 999px;
+      bottom: 16px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      left: 50%;
+      padding: 7px 13px;
+      position: absolute;
+      transform: translateX(-50%);
+    }
+
+    @media (max-width: 760px) {
+      .gallery-control {
+        height: 44px;
+        width: 44px;
+      }
+
+      .gallery-control.prev {
+        left: 10px;
+      }
+
+      .gallery-control.next {
+        right: 10px;
+      }
+    }
+
+    .hotel {
+      border-bottom: 1px solid var(--line);
+      padding: 12px 0;
+    }
+
+    .hotel:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .hotel-photo {
+      background: linear-gradient(135deg, #bee9da, #88cdb3);
+      border-radius: var(--radius);
+      flex: 0 0 auto;
+      height: 58px;
+      width: 72px;
+    }
+
+    .includes {
+      display: grid;
+      gap: 10px;
+    }
+
+    .reels {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding: 2px 2px 10px;
+      scrollbar-width: none;
+    }
+
+    .reels::-webkit-scrollbar {
+      display: none;
+    }
+
+    .reel {
+      aspect-ratio: 9 / 16;
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+      display: block;
+      flex: 0 0 128px;
+      overflow: hidden;
+      position: relative;
+      text-decoration: none;
+    }
+
+    .reel img {
+      display: block;
+      height: 100%;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .reel::before {
+      background: rgba(0, 0, 0, 0.22);
+      content: "";
+      inset: 0;
+      position: absolute;
+    }
+
+    .reel::after {
+      border-bottom: 16px solid transparent;
+      border-left: 24px solid rgba(255, 255, 255, 0.88);
+      border-top: 16px solid transparent;
+      content: "";
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-40%, -50%);
+    }
+
+    @media (max-width: 760px) {
+      .layout,
+      .features {
+        grid-template-columns: 1fr;
+      }
+
+      .page {
+        padding-bottom: 96px;
+      }
+
+      .booking {
+        position: static;
+      }
+
+      h1 {
+        font-size: 21px;
+      }
+
+      .video-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-flights {
+        grid-template-columns: 1fr;
+      }
+
+      .mobile-whatsapp {
+        background: rgba(255, 255, 255, 0.94);
+        border-top: 1px solid var(--line);
+        bottom: 0;
+        box-shadow: 0 -8px 26px rgba(0, 0, 0, 0.08);
+        display: block;
+        left: 0;
+        padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+        position: fixed;
+        right: 0;
+        z-index: 15;
+      }
+
+      .mobile-whatsapp .primary {
+        margin: 0 auto;
+        max-width: 520px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <img src="logo.png" alt="Mango Tour" class="site-logo">
+    <div class="site-title">МАНГО ТУР</div>
+    <nav class="social-links" aria-label="Социальные сети Mango Tour">
+      <a class="social-link instagram" href="https://www.instagram.com/mango.tour_?utm_source=qr&igsh=MWoyZDZ6NnZrcXg3cA==" target="_blank" rel="noopener noreferrer" aria-label="Mango Tour в Instagram">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
+        </svg>
+      </a>
+      <a class="social-link facebook" href="https://www.facebook.com/share/1FHwMCpMCN/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Mango Tour в Facebook">
+        <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+          <path d="M21.95 5.005l-3.306-.004c-3.206 0-5.277 2.124-5.277 5.415v2.815h-3.328v3.95h3.328v10.584h4.091v-10.584h3.332l.532-3.95h-3.864v-2.316c0-1.12.31-1.884 1.916-1.884h2.054v-3.535c-.354-.047-1.574-.153-2.992-.153z"/>
+        </svg>
+      </a>
+    </nav>
+  </header>
+  <main class="page">
+    <div class="layout">
+      <article>
+        <section class="hero">
+          <div class="hero-carousel" aria-label="Фотографии тура">
+            <div class="hero-slide active">
+              <img src="avatar_photos/avatar_01.jpeg" alt="Поезд в горах Чжанцзяцзе">
+            </div>
+            <div class="hero-slide">
+              <img src="avatar_photos/avatar_02.jpeg" alt="Скалы и лифт Байлун">
+            </div>
+            <div class="hero-slide">
+              <img src="avatar_photos/avatar_03.jpeg" alt="Пики Чжанцзяцзе">
+            </div>
+            <div class="hero-slide">
+              <img src="avatar_photos/avatar_04.jpeg" alt="Карстовые колонны Чжанцзяцзе">
+            </div>
+            <div class="hero-slide">
+              <img src="avatar_photos/avatar_05.jpeg" alt="Туманные скалы Чжанцзяцзе">
+            </div>
+            <div class="hero-slide">
+              <img src="avatar_photos/avatar_06.jpeg" alt="Закат над горами Чжанцзяцзе">
+            </div>
+            <div class="hero-slide">
+              <img src="avatar_photos/avatar_07.jpeg" alt="Фужун ночью">
+            </div>
+            <div class="hero-slide">
+              <img src="avatar_photos/avatar_08.jpeg" alt="72 чудесные башни ночью">
+            </div>
+            <div class="hero-slide">
+              <img src="avatar_photos/avatar_09.jpeg" alt="Вечернее шоу">
+            </div>
+            <div class="hero-slide">
+              <img src="avatar_photos/avatar_10.jpeg" alt="Водопады Фужун">
+            </div>
+            <div class="hero-slide">
+              <img src="avatar_photos/avatar_11.jpeg" alt="Ночной Фужун">
+            </div>
+            <div class="hero-slide">
+              <img src="avatar_photos/avatar_12.jpeg" alt="Стеклянный мост">
+            </div>
+            <div class="hero-slide">
+              <img src="avatar_photos/avatar_13.jpeg" alt="Стеклянный мост Гранд-Каньона">
+            </div>
+            <div class="hero-slide">
+              <img src="avatar_photos/avatar_14.jpeg" alt="Большой каньон">
+            </div>
+            <div class="hero-slide">
+              <img src="avatar_photos/avatar_15.jpeg" alt="Этнографическая деревня">
+            </div>
+            <div class="hero-slide">
+              <img src="avatar_photos/avatar_16.jpeg" alt="72 чудесные башни">
+            </div>
+            <div class="hero-slide">
+              <img src="avatar_photos/avatar_17.jpeg" alt="Врата Бога на горе Тяньмэнь">
+            </div>
+            <button class="hero-control prev" type="button" onclick="changeHeroSlide(-1)" aria-label="Предыдущее фото">‹</button>
+            <button class="hero-control next" type="button" onclick="changeHeroSlide(1)" aria-label="Следующее фото">›</button>
+            <div class="hero-dots" aria-label="Выбор фотографии">
+              <button class="hero-dot active" type="button" onclick="showHeroSlide(0)" aria-label="Фото 1"></button>
+              <button class="hero-dot" type="button" onclick="showHeroSlide(1)" aria-label="Фото 2"></button>
+              <button class="hero-dot" type="button" onclick="showHeroSlide(2)" aria-label="Фото 3"></button>
+              <button class="hero-dot" type="button" onclick="showHeroSlide(3)" aria-label="Фото 4"></button>
+              <button class="hero-dot" type="button" onclick="showHeroSlide(4)" aria-label="Фото 5"></button>
+              <button class="hero-dot" type="button" onclick="showHeroSlide(5)" aria-label="Фото 6"></button>
+              <button class="hero-dot" type="button" onclick="showHeroSlide(6)" aria-label="Фото 7"></button>
+              <button class="hero-dot" type="button" onclick="showHeroSlide(7)" aria-label="Фото 8"></button>
+              <button class="hero-dot" type="button" onclick="showHeroSlide(8)" aria-label="Фото 9"></button>
+              <button class="hero-dot" type="button" onclick="showHeroSlide(9)" aria-label="Фото 10"></button>
+              <button class="hero-dot" type="button" onclick="showHeroSlide(10)" aria-label="Фото 11"></button>
+              <button class="hero-dot" type="button" onclick="showHeroSlide(11)" aria-label="Фото 12"></button>
+              <button class="hero-dot" type="button" onclick="showHeroSlide(12)" aria-label="Фото 13"></button>
+              <button class="hero-dot" type="button" onclick="showHeroSlide(13)" aria-label="Фото 14"></button>
+              <button class="hero-dot" type="button" onclick="showHeroSlide(14)" aria-label="Фото 15"></button>
+              <button class="hero-dot" type="button" onclick="showHeroSlide(15)" aria-label="Фото 16"></button>
+              <button class="hero-dot" type="button" onclick="showHeroSlide(16)" aria-label="Фото 17"></button>
+            </div>
+          </div>
+          <div class="hero-body">
+            <div class="tags">
+              <span class="tag active">Прямой рейс</span>
+              <span class="tag">4 ночи / 5 дней</span>
+            </div>
+            <h1>Аватар: Чжанцзяцзе, горы, каньоны и небесные мосты</h1>
+            <p class="summary">Прямой рейс Инчхон - Чжанцзяцзе: VIP-проходы, озеро Баофэн, Фужун, Тяньмэньшань, стеклянный мост и шоу включены в программу.</p>
+            <div class="hero-flights" aria-label="Даты и время вылетов">
+              <div class="hero-flight">
+                <div class="hero-flight-title">Рейс туда</div>
+                <div class="hero-flight-time">14 июня, 21:15 → 23:55</div>
+                <div class="hero-flight-text">Sichuan Airlines 3U3708 · Инчхон - Чжанцзяцзе</div>
+              </div>
+              <div class="hero-flight">
+                <div class="hero-flight-title">Рейс обратно</div>
+                <div class="hero-flight-time">18 июня, 16:20 → 20:10</div>
+                <div class="hero-flight-text">Sichuan Airlines 3U3707 · Чжанцзяцзе - Инчхон</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Что входит в тур</h2>
+          <div class="features">
+            <div class="feature"><span class="mark">✓</span><div>Прямой перелёт Инчхон - Чжанцзяцзе - Инчхон</div></div>
+            <div class="feature"><span class="mark">✓</span><div>Питание включено</div></div>
+            <div class="feature"><span class="mark">✓</span><div>VIP-сервисы: аэропорт, Wulingyuan PASS и VIP-круиз по Баофэнху</div></div>
+            <div class="feature"><span class="mark">✓</span><div>72 чудесные башни (72 Цилоу), шоу, Фужун, стеклянный мост и массаж включены</div></div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Маршрут</h2>
+          <p class="route-note">Порядок дней и время посещения локаций могут меняться в зависимости от погоды, загруженности объектов и организационных условий на месте. Все заявленные локации будут осмотрены, а при необходимости отдельные пункты могут быть заменены на равнозначные по уровню и впечатлениям.</p>
+          <div class="route">
+            <div class="day">
+              <h3>День 1: Инчхон - Чжанцзяцзе</h3>
+              <p>Встреча в аэропорту Инчхон, прямой вечерний рейс Sichuan Airlines 3U3708. Прибытие в Чжанцзяцзе, встреча с гидом, трансфер в отель около 10 минут и отдых.</p>
+            </div>
+            <div class="day">
+              <h3>День 2: Янцзяцзе, Юаньцзяцзе и вечерняя программа</h3>
+              <div class="excursions">
+                <button class="excursion" type="button" onclick="openExcursion('yangjiajie')"><span>▣</span><span>Янцзяцзе с подъёмом на канатной дороге</span></button>
+                <button class="excursion" type="button" onclick="openExcursion('vipPass')"><span>▣</span><span>VIP PASS по маршруту Улинъюань</span></button>
+                <button class="excursion" type="button" onclick="openExcursion('yuanjiajie')"><span>▣</span><span>Юаньцзяцзе - пейзажи фильма «Аватар»</span></button>
+                <button class="excursion" type="button" onclick="openExcursion('bailong')"><span>▣</span><span>Лифт Байлун</span></button>
+                <button class="excursion" type="button" onclick="openExcursion('goldenWhip')"><span>▣</span><span>Ущелье Золотой кнут</span></button>
+                <button class="excursion" type="button" onclick="openExcursion('tenMile')"><span>▣</span><span>Десятимильная галерея на монорельсе</span></button>
+                <button class="excursion" type="button" onclick="openExcursion('qilou')"><span>▣</span><span>72 чудесные башни (72 Цилоу), внутренний осмотр</span></button>
+                <button class="excursion" type="button" onclick="openExcursion('tianmenShow')"><span>▣</span><span>Шоу «Тяньмэнь Фокс Фея»</span></button>
+                <button class="excursion" type="button" onclick="openExcursion('bodyMassage')"><span>▣</span><span>Массаж всего тела</span></button>
+              </div>
+            </div>
+            <div class="day">
+              <h3>День 3: Озеро Баофэн и Фужун</h3>
+              <div class="excursions">
+                <button class="excursion" type="button" onclick="openExcursion('baofeng')"><span>▣</span><span>Озеро Баофэн, VIP-прогулка на лодке</span></button>
+                <button class="excursion" type="button" onclick="openExcursion('furong')"><span>▣</span><span>Фужун и вечерние виды</span></button>
+                <button class="excursion" type="button" onclick="openExcursion('furongDinner')"><span>▣</span><span>Ужин с видом на водопад Фужун</span></button>
+              </div>
+            </div>
+            <div class="day">
+              <h3>День 4: Гора Тяньмэнь, стеклянный мост и Grand Canyon</h3>
+              <div class="excursions">
+                <button class="excursion" type="button" onclick="openExcursion('tianmenMountain')"><span>▣</span><span>Гора Тяньмэнь: канатная дорога и стеклянная тропа Гуйгу</span></button>
+                <button class="excursion" type="button" onclick="openExcursion('glassBridge')"><span>▣</span><span>Стеклянный мост Гранд-Каньона</span></button>
+                <button class="excursion" type="button" onclick="openExcursion('grandCanyon')"><span>▣</span><span>Маршрут по Grand Canyon</span></button>
+              </div>
+            </div>
+            <div class="day">
+              <h3>День 5: Этнодеревня, VIP-аэропорт и возвращение</h3>
+              <div class="excursions">
+                <button class="excursion" type="button" onclick="openExcursion('folkVillage')"><span>▣</span><span>Этнографическая деревня Чжанцзяцзе</span></button>
+                <button class="excursion" type="button" onclick="openExcursion('vipAirport')"><span>▣</span><span>VIP-сервис в аэропорту Чжанцзяцзе</span></button>
+                <button class="excursion" type="button" onclick="openExcursion('returnFlight')"><span>▣</span><span>Рейс Чжанцзяцзе - Инчхон</span></button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Отели</h2>
+          <div class="hotel">
+            <div class="hotel-photo"></div>
+            <div>
+              <strong>Предполагаемые отели в Чжанцзяцзе</strong>
+              <p>Blue Bay Hotel, Zhangjiajie Huachen International Hotel, Best Western Plus или отель подобного уровня по программе тура.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Включено и не включено</h2>
+          <div class="includes">
+            <div class="include-row"><span class="mark">✓</span><div>Авиаперелёт, проживание, питание, транспорт, гид и входные билеты по программе.</div></div>
+            <div class="include-row"><span class="mark">✓</span><div>Включённые спецпрограммы: 72 чудесные башни (72 Цилоу), Фужун, шоу, стеклянный мост, каньон и массаж.</div></div>
+            <div class="include-row"><span class="mark">!</span><div>Не включены личные расходы и VIP-места на шоу по желанию.</div></div>
+          </div>
+        </section>
+
+        <section class="section" aria-labelledby="videosTitle">
+          <h2 id="videosTitle">Видео о туре</h2>
+          <div class="video-grid">
+            <div class="video-frame">
+              <iframe src="https://www.youtube.com/embed/4GrPYRwzFWM" title="Видео о туре 1" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <div class="video-frame">
+              <iframe src="https://www.youtube.com/embed/ombiYtCQ1BQ" title="Видео о туре 2" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <div class="video-frame">
+              <iframe src="https://www.youtube.com/embed/-wksAXfruUw" title="Видео о туре 3" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <div class="video-frame">
+              <iframe src="https://www.youtube.com/embed/pdLK1Li6QnA" title="Видео о туре 4" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" aria-labelledby="reelsTitle">
+          <h2 id="reelsTitle">Отзывы о нашей компании</h2>
+          <div class="reels">
+            <a class="reel" href="https://www.instagram.com/stories/highlights/18404039212150167/" target="_blank" rel="noopener noreferrer" aria-label="Открыть видео отзыв 1">
+              <img src="reel_1.png" alt="Видео отзыв туристов">
+            </a>
+            <a class="reel" href="https://www.instagram.com/stories/highlights/18073118810103351/" target="_blank" rel="noopener noreferrer" aria-label="Открыть видео отзыв 2">
+              <img src="reel_2.png" alt="Видео отзыв туристов">
+            </a>
+            <a class="reel" href="https://www.instagram.com/stories/highlights/18207003232316313/" target="_blank" rel="noopener noreferrer" aria-label="Открыть видео отзыв 3">
+              <img src="reel_3.png" alt="Видео отзыв туристов">
+            </a>
+            <a class="reel" href="https://www.instagram.com/stories/highlights/18098414977586720/" target="_blank" rel="noopener noreferrer" aria-label="Открыть видео отзыв 4">
+              <img src="reel_4.png" alt="Видео отзыв туристов">
+            </a>
+          </div>
+        </section>
+      </article>
+
+      <aside class="booking" aria-label="Бронирование">
+        <div class="price">1 800 000 ₩</div>
+        <div class="small">за человека</div>
+
+        <div class="flight">
+          <div class="flight-title">Рейс туда · 4 ночи / 5 дней</div>
+          <div class="flight-row">
+            <div>
+              <div class="time">14 июня, 21:15</div>
+              <div class="airport">Sichuan Airlines 3U3708 · вылет из Инчхона</div>
+            </div>
+            <div class="small">→</div>
+            <div style="text-align:right">
+              <div class="time">14 июня, 23:55</div>
+              <div class="airport">прилёт в Чжанцзяцзе</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flight">
+          <div class="flight-title">Рейс обратно</div>
+          <div class="flight-row">
+            <div>
+              <div class="time">18 июня, 16:20</div>
+              <div class="airport">Sichuan Airlines 3U3707 · вылет из Чжанцзяцзе</div>
+            </div>
+            <div class="small">→</div>
+            <div style="text-align:right">
+              <div class="time">18 июня, 20:10</div>
+              <div class="airport">прилёт в Инчхон</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="people">
+          <button type="button" onclick="changePeople(-1)" aria-label="Уменьшить количество">-</button>
+          <div class="count" id="peopleCount">1</div>
+          <button type="button" onclick="changePeople(1)" aria-label="Увеличить количество">+</button>
+          <div class="small">человека</div>
+        </div>
+
+        <div class="total">
+          <span class="small">Итого</span>
+          <strong id="totalPrice">1 800 000 ₩</strong>
+        </div>
+
+        <a class="primary" href="https://wa.me/821099752550?text=Здравствуйте!%20Хочу%20забронировать%20тур%20Аватар%20Чжанцзяцзе%20на%2014-18%20июня%202026.%20Подскажите,%20как%20оформить?" target="_blank" rel="noopener" aria-label="Написать в WhatsApp для бронирования тура">
+          <span class="whatsapp-icon" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill="currentColor" d="M16.02 3.2C8.96 3.2 3.22 8.89 3.22 15.88c0 2.24.6 4.42 1.73 6.34L3.1 28.8l6.78-1.77a12.9 12.9 0 0 0 6.13 1.56h.01c7.06 0 12.8-5.69 12.8-12.69S23.08 3.2 16.02 3.2Zm0 23.25h-.01c-1.94 0-3.84-.52-5.5-1.5l-.4-.23-4.02 1.05 1.07-3.88-.26-.4a10.43 10.43 0 0 1-1.6-5.61c0-5.8 4.8-10.52 10.71-10.52 2.87 0 5.56 1.1 7.58 3.09a10.4 10.4 0 0 1 3.15 7.46c0 5.81-4.8 10.54-10.72 10.54Zm5.88-7.9c-.32-.16-1.9-.93-2.2-1.03-.3-.11-.52-.16-.74.16-.22.32-.85 1.03-1.04 1.25-.19.21-.38.24-.7.08-.32-.16-1.36-.5-2.6-1.59-.96-.85-1.61-1.9-1.8-2.22-.19-.32-.02-.5.14-.66.15-.14.32-.37.48-.56.16-.19.22-.32.32-.53.11-.21.06-.4-.03-.56-.08-.16-.74-1.77-1.01-2.42-.27-.64-.54-.55-.74-.56h-.64c-.22 0-.58.08-.88.4-.3.32-1.15 1.12-1.15 2.72 0 1.61 1.18 3.16 1.34 3.38.16.21 2.32 3.51 5.62 4.92.79.34 1.4.54 1.88.69.79.25 1.5.21 2.07.13.63-.09 1.9-.77 2.17-1.51.27-.75.27-1.38.19-1.51-.08-.14-.3-.22-.62-.38Z"/>
+            </svg>
+          </span>
+          <span>Забронировать в WhatsApp</span>
+        </a>
+
+      </aside>
+    </div>
+  </main>
+
+  <div class="mobile-whatsapp" aria-label="Быстрая связь в WhatsApp">
+    <a class="primary" href="https://wa.me/821099752550?text=Здравствуйте!%20Хочу%20забронировать%20тур%20Аватар%20Чжанцзяцзе%20на%2014-18%20июня%202026.%20Подскажите,%20как%20оформить?" target="_blank" rel="noopener" aria-label="Написать в WhatsApp для бронирования тура">
+      <span class="whatsapp-icon" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill="currentColor" d="M16.02 3.2C8.96 3.2 3.22 8.89 3.22 15.88c0 2.24.6 4.42 1.73 6.34L3.1 28.8l6.78-1.77a12.9 12.9 0 0 0 6.13 1.56h.01c7.06 0 12.8-5.69 12.8-12.69S23.08 3.2 16.02 3.2Zm0 23.25h-.01c-1.94 0-3.84-.52-5.5-1.5l-.4-.23-4.02 1.05 1.07-3.88-.26-.4a10.43 10.43 0 0 1-1.6-5.61c0-5.8 4.8-10.52 10.71-10.52 2.87 0 5.56 1.1 7.58 3.09a10.4 10.4 0 0 1 3.15 7.46c0 5.81-4.8 10.54-10.72 10.54Zm5.88-7.9c-.32-.16-1.9-.93-2.2-1.03-.3-.11-.52-.16-.74.16-.22.32-.85 1.03-1.04 1.25-.19.21-.38.24-.7.08-.32-.16-1.36-.5-2.6-1.59-.96-.85-1.61-1.9-1.8-2.22-.19-.32-.02-.5.14-.66.15-.14.32-.37.48-.56.16-.19.22-.32.32-.53.11-.21.06-.4-.03-.56-.08-.16-.74-1.77-1.01-2.42-.27-.64-.54-.55-.74-.56h-.64c-.22 0-.58.08-.88.4-.3.32-1.15 1.12-1.15 2.72 0 1.61 1.18 3.16 1.34 3.38.16.21 2.32 3.51 5.62 4.92.79.34 1.4.54 1.88.69.79.25 1.5.21 2.07.13.63-.09 1.9-.77 2.17-1.51.27-.75.27-1.38.19-1.51-.08-.14-.3-.22-.62-.38Z"/>
+        </svg>
+      </span>
+      <span>Забронировать в WhatsApp</span>
+    </a>
+  </div>
+
+  <div class="modal" id="excursionModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" onclick="closeExcursion(event)">
+    <div class="modal-card">
+      <button class="modal-close" type="button" aria-label="Закрыть" onclick="closeExcursion()">×</button>
+      <img id="modalImage" src="" alt="">
+      <div class="modal-body">
+        <div class="modal-kicker" id="modalDay"></div>
+        <h3 id="modalTitle"></h3>
+        <p id="modalText"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="gallery-modal" id="galleryModal" role="dialog" aria-modal="true" aria-label="Галерея фотографий" onclick="closeGallery(event)">
+    <button class="gallery-close" type="button" aria-label="Закрыть галерею" onclick="closeGallery()">×</button>
+    <button class="gallery-control prev" type="button" aria-label="Предыдущее фото" onclick="changeGalleryImage(-1, event)">‹</button>
+    <img class="gallery-image" id="galleryImage" src="" alt="">
+    <button class="gallery-control next" type="button" aria-label="Следующее фото" onclick="changeGalleryImage(1, event)">›</button>
+    <div class="gallery-counter" id="galleryCounter"></div>
+  </div>
+
+  <script>
+    const pricePerPerson = 1800000;
+    let people = 1;
+    let heroSlide = 0;
+    let galleryIndex = 0;
+    let heroAutoTimer = null;
+    let suppressHeroClick = false;
+
+    function showHeroSlide(index) {
+      const slides = Array.from(document.querySelectorAll(".hero-slide"));
+      const dots = Array.from(document.querySelectorAll(".hero-dot"));
+      if (!slides.length) return;
+
+      heroSlide = (index + slides.length) % slides.length;
+      slides.forEach((slide, slideIndex) => {
+        slide.classList.toggle("active", slideIndex === heroSlide);
+      });
+      dots.forEach((dot, dotIndex) => {
+        dot.classList.toggle("active", dotIndex === heroSlide);
+      });
+    }
+
+    function changeHeroSlide(delta) {
+      showHeroSlide(heroSlide + delta);
+    }
+
+    function startHeroAutoPlay() {
+      stopHeroAutoPlay();
+      heroAutoTimer = window.setInterval(() => {
+        changeHeroSlide(1);
+      }, 1500);
+    }
+
+    function stopHeroAutoPlay() {
+      if (heroAutoTimer) {
+        window.clearInterval(heroAutoTimer);
+        heroAutoTimer = null;
+      }
+    }
+
+    function getGalleryImages() {
+      return Array.from(document.querySelectorAll(".hero-slide img"));
+    }
+
+    function showGalleryImage(index) {
+      const images = getGalleryImages();
+      const galleryImage = document.getElementById("galleryImage");
+      const galleryCounter = document.getElementById("galleryCounter");
+      if (!images.length || !galleryImage || !galleryCounter) return;
+
+      galleryIndex = (index + images.length) % images.length;
+      const activeImage = images[galleryIndex];
+      galleryImage.src = activeImage.src;
+      galleryImage.alt = activeImage.alt;
+      galleryCounter.textContent = `${galleryIndex + 1} / ${images.length}`;
+      showHeroSlide(galleryIndex);
+    }
+
+    function openGallery(index) {
+      const modal = document.getElementById("galleryModal");
+      if (!modal) return;
+
+      showGalleryImage(index);
+      modal.classList.add("open");
+      document.body.style.overflow = "hidden";
+      stopHeroAutoPlay();
+    }
+
+    function closeGallery(event) {
+      if (event && event.target !== event.currentTarget) return;
+
+      const modal = document.getElementById("galleryModal");
+      if (!modal) return;
+
+      modal.classList.remove("open");
+      document.body.style.overflow = "";
+      startHeroAutoPlay();
+    }
+
+    function changeGalleryImage(delta, event) {
+      if (event) event.stopPropagation();
+      showGalleryImage(galleryIndex + delta);
+    }
+
+    function setupSwipe(element, onSwipe) {
+      if (!element) return;
+
+      let startX = 0;
+      let startY = 0;
+      let lastX = 0;
+      let lastY = 0;
+      let isTouching = false;
+
+      element.addEventListener("touchstart", (event) => {
+        if (event.touches.length !== 1) return;
+
+        startX = event.touches[0].clientX;
+        startY = event.touches[0].clientY;
+        lastX = startX;
+        lastY = startY;
+        isTouching = true;
+      }, { passive: true });
+
+      element.addEventListener("touchmove", (event) => {
+        if (!isTouching || event.touches.length !== 1) return;
+
+        lastX = event.touches[0].clientX;
+        lastY = event.touches[0].clientY;
+      }, { passive: true });
+
+      element.addEventListener("touchend", () => {
+        if (!isTouching) return;
+
+        const deltaX = lastX - startX;
+        const deltaY = lastY - startY;
+        const isHorizontalSwipe = Math.abs(deltaX) > 45 && Math.abs(deltaX) > Math.abs(deltaY) * 1.4;
+        isTouching = false;
+
+        if (!isHorizontalSwipe) return;
+
+        onSwipe(deltaX < 0 ? 1 : -1);
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const heroCarousel = document.querySelector(".hero-carousel");
+      setupSwipe(heroCarousel, (delta) => {
+        suppressHeroClick = true;
+        stopHeroAutoPlay();
+        changeHeroSlide(delta);
+        startHeroAutoPlay();
+        window.setTimeout(() => {
+          suppressHeroClick = false;
+        }, 350);
+      });
+
+      setupSwipe(document.getElementById("galleryModal"), (delta) => {
+        changeGalleryImage(delta);
+      });
+
+      getGalleryImages().forEach((image, index) => {
+        image.addEventListener("click", () => {
+          if (suppressHeroClick) return;
+          openGallery(index);
+        });
+      });
+      startHeroAutoPlay();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      const modal = document.getElementById("galleryModal");
+      if (!modal || !modal.classList.contains("open")) return;
+
+      if (event.key === "Escape") {
+        closeGallery();
+      } else if (event.key === "ArrowLeft") {
+        changeGalleryImage(-1);
+      } else if (event.key === "ArrowRight") {
+        changeGalleryImage(1);
+      }
+    });
+
+    const excursions = {
+      yangjiajie: {
+        day: "День 2",
+        title: "Янцзяцзе с подъёмом на канатной дороге",
+        image: "",
+        text: "Подъём по канатной дороге Янцзяцзе: около 1,9 км и примерно 6 минут в одну сторону. Район известен крутым рельефом и живописными каменными пиками."
+      },
+      vipPass: {
+        day: "День 2",
+        title: "VIP PASS по маршруту Улинъюань",
+        image: "",
+        text: "VIP PASS ускоряет перемещение на шаттлах по основному маршруту Улинъюань: вход, Янцзяцзе, Юаньцзяцзе, лифт Байлун и Десятимильная галерея."
+      },
+      yuanjiajie: {
+        day: "День 2",
+        title: "Юаньцзяцзе - пейзажи фильма «Аватар»",
+        image: "",
+        text: "Юаньцзяцзе знаменит длинными каменными столбами и видами, которые стали одним из мотивов фантастических ландшафтов фильма «Аватар»."
+      },
+      bailong: {
+        day: "День 2",
+        title: "Лифт Байлун",
+        image: "",
+        text: "Спуск на прозрачном лифте Байлун высотой около 335 метров. Это один из самых известных инженерных объектов Чжанцзяцзе."
+      },
+      goldenWhip: {
+        day: "День 2",
+        title: "Ущелье Золотой кнут",
+        image: "",
+        text: "Прогулка по ущелью Золотой кнут в восточной части лесного парка Чжанцзяцзе: каменная тропа, скалы и природные виды."
+      },
+      tenMile: {
+        day: "День 2",
+        title: "Десятимильная галерея на монорельсе",
+        image: "",
+        text: "Маршрут среди необычных пиков и скал, напоминающих гигантскую китайскую пейзажную картину. Осмотр проходит на удобном монорельсе."
+      },
+      qilou: {
+        day: "День 2",
+        title: "72 чудесные башни (72 Цилоу), внутренний осмотр",
+        image: "",
+        text: "Новый яркий ориентир Чжанцзяцзе, открытый в 2023 году. Вечером здесь особенно эффектная подсветка, выступления и уличная атмосфера."
+      },
+      tianmenShow: {
+        day: "День 2",
+        title: "Шоу «Тяньмэнь Фокс Фея»",
+        image: "",
+        text: "Музыкальное шоу режиссёра Чжан Имоу, известного постановками крупных китайских церемоний. Если шоу не работает, программа заменяется на Tian Gu Qing Show."
+      },
+      bodyMassage: {
+        day: "День 2",
+        title: "Массаж всего тела",
+        image: "",
+        text: "Включённый массаж всего тела после насыщенного экскурсионного дня, чтобы снять усталость после прогулок и переездов."
+      },
+      baofeng: {
+        day: "День 3",
+        title: "Озеро Баофэн, VIP-прогулка на лодке",
+        image: "",
+        text: "Баофэнху - красивое озеро среди гор, считающееся одним из главных водных пейзажей района Улинъюань. По программе включена VIP-прогулка на лодке."
+      },
+      furong: {
+        day: "День 3",
+        title: "Фужун и вечерние виды",
+        image: "",
+        text: "Поездка в Фужун: древний посёлок с природным водопадом и красивой вечерней подсветкой. В программе акцент на ночной вид."
+      },
+      furongDinner: {
+        day: "День 3",
+        title: "Ужин с видом на водопад Фужун",
+        image: "",
+        text: "Особенный ужин в ресторане с видом на ночной Фужун и водопад. Это одна из включённых атмосферных частей маршрута."
+      },
+      tianmenMountain: {
+        day: "День 4",
+        title: "Гора Тяньмэнь: канатная дорога и стеклянная тропа Гуйгу",
+        image: "",
+        text: "Гора Тяньмэнь: канатная дорога в обе стороны и стеклянная тропа над обрывом Гуйгу. Это главная достопримечательность маршрута. В случае ремонта канатной дороги программа заменяется на гору Цисинь с канатной дорогой и стеклянной тропой, откуда со смотровой площадки «Око Неба» на высоте 1520 м открывается вид на город и море облаков."
+      },
+      qixingMountain: {
+        day: "День 4",
+        title: "Альтернатива: Цисиншань и стеклянная тропа",
+        image: "",
+        text: "Если основной маршрут Тяньмэньшань недоступен, программа заменяется на Цисиншань с канатной дорогой, стеклянной тропой и обзором с высоты около 1520 метров."
+      },
+      glassBridge: {
+        day: "День 4",
+        title: "Стеклянный мост Гранд-Каньона",
+        image: "",
+        text: "Стеклянный мост Большого каньона: около 430 метров длиной и примерно 300 метров высотой. Один из самых эффектных пунктов маршрута."
+      },
+      grandCanyon: {
+        day: "День 4",
+        title: "Маршрут по Grand Canyon",
+        image: "",
+        text: "Прогулка по живописному Grand Canyon после стеклянного моста: скальные стены, зелёные ущелья, смотровые зоны и удобный маршрут для красивых фотографий. Это одна из самых эффектных природных частей программы в Чжанцзяцзе."
+      },
+      folkVillage: {
+        day: "День 5",
+        title: "Этнографическая деревня Чжанцзяцзе",
+        image: "",
+        text: "Посещение этнографической деревни в городе Чжанцзяцзе: знакомство с бытом местных народов и выставочными залами."
+      },
+      vipAirport: {
+        day: "День 5",
+        title: "VIP-сервис в аэропорту Чжанцзяцзе",
+        image: "",
+        text: "VIP-проводы в аэропорту: отдельная зона ожидания, приоритетная регистрация, VIP-проход и помощь с багажом."
+      },
+      returnFlight: {
+        day: "День 5",
+        title: "Рейс Чжанцзяцзе - Инчхон",
+        image: "",
+        text: "Вылет из Чжанцзяцзе 18 июня в 16:20 рейсом Sichuan Airlines 3U3707. Прибытие в Инчхон в 20:10."
+      }
+    };
+
+    function changePeople(delta) {
+      people = Math.max(1, people + delta);
+      document.getElementById("peopleCount").textContent = people;
+      document.getElementById("totalPrice").textContent =
+        (people * pricePerPerson).toLocaleString("ru-RU") + " ₩";
+    }
+
+    function openExcursion(id) {
+      const item = excursions[id];
+      if (!item) return;
+
+      const modal = document.getElementById("excursionModal");
+      const image = document.getElementById("modalImage");
+      document.getElementById("modalDay").textContent = item.day;
+      document.getElementById("modalTitle").textContent = item.title;
+      document.getElementById("modalText").textContent = item.text;
+      if (item.image) {
+        image.src = item.image;
+        image.alt = item.title;
+        image.style.display = "block";
+      } else {
+        image.removeAttribute("src");
+        image.alt = "";
+        image.style.display = "none";
+      }
+      modal.classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeExcursion(event) {
+      if (event && event.target.id !== "excursionModal") return;
+      document.getElementById("excursionModal").classList.remove("open");
+      document.body.style.overflow = "";
+    }
+
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "Escape") closeExcursion();
+    });
+  </script>
+</body>
+</html>
