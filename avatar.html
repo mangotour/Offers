@@ -519,6 +519,17 @@
       padding-left: 18px;
     }
 
+    .route-note {
+      background: var(--surface-soft);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+      margin-bottom: 16px;
+      padding: 12px 14px;
+    }
+
     .day {
       margin-bottom: 18px;
       position: relative;
@@ -988,6 +999,7 @@
 
         <section class="section">
           <h2>Маршрут</h2>
+          <p class="route-note">Порядок дней и время посещения локаций могут меняться в зависимости от погоды, загруженности объектов и организационных условий на месте. Все заявленные локации будут осмотрены, а при необходимости отдельные пункты могут быть заменены на равнозначные по уровню и впечатлениям.</p>
           <div class="route">
             <div class="day">
               <h3>День 1: Инчхон - Чжанцзяцзе</h3>
@@ -1016,9 +1028,11 @@
               </div>
             </div>
             <div class="day">
-              <h3>День 4: Гора Тяньмэнь</h3>
+              <h3>День 4: Гора Тяньмэнь, стеклянный мост и Grand Canyon</h3>
               <div class="excursions">
                 <button class="excursion" type="button" onclick="openExcursion('tianmenMountain')"><span>▣</span><span>Гора Тяньмэнь: канатная дорога и стеклянная тропа Гуйгу</span></button>
+                <button class="excursion" type="button" onclick="openExcursion('glassBridge')"><span>▣</span><span>Стеклянный мост Гранд-Каньона</span></button>
+                <button class="excursion" type="button" onclick="openExcursion('grandCanyon')"><span>▣</span><span>Маршрут по Grand Canyon</span></button>
               </div>
             </div>
             <div class="day">
@@ -1434,9 +1448,9 @@
       },
       grandCanyon: {
         day: "День 4",
-        title: "Маршрут по Большому каньону",
+        title: "Маршрут по Grand Canyon",
         image: "",
-        text: "Маршрут после стеклянного моста включает спуск по каньону. По программе возможны лифт или горка, а зиплайн используется отдельно только при согласии."
+        text: "Прогулка по живописному Grand Canyon после стеклянного моста: скальные стены, зелёные ущелья, смотровые зоны и удобный маршрут для красивых фотографий. Это одна из самых эффектных природных частей программы в Чжанцзяцзе."
       },
       folkVillage: {
         day: "День 5",
