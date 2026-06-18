@@ -17,7 +17,7 @@
 </head>
 <body>
     <div id="root"></div>
-    <script type="text/babel">
+    <script type="text/plain" id="offer-app-source">
         const { useState, useEffect, useRef } = React;
 
         const parseInjectedJson = (raw, fallback) => {
@@ -503,6 +503,13 @@
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
+    </script>
+    <script>
+        const offerAppSource = document.getElementById('offer-app-source');
+        const offerAppCode = Babel.transform(offerAppSource.textContent, {
+            presets: [['react', { runtime: 'classic' }]]
+        }).code;
+        new Function(offerAppCode)();
     </script>
 </body>
 </html>
