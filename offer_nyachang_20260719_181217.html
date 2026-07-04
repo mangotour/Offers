@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mango Tour - Ваше предложение</title>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --line: #e5e7eb;
+            --text: #111827;
+            --muted: #6b7280;
+            --orange: #f97316;
+            --orange-soft: #fff7ed;
+            --green: #16a34a;
+            --green-soft: #f0fdf4;
+            --blue-soft: #eff6ff;
+            --shadow: 0 14px 40px rgba(15, 23, 42, 0.08);
+            --radius-xl: 24px;
+            --radius-lg: 18px;
+            --radius-md: 14px;
+        }
+
+        * { box-sizing: border-box; }
+        html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        a { color: inherit; text-decoration: none; }
+        img { display: block; max-width: 100%; }
+        button { font: inherit; }
+
+        .page {
+            max-width: 420px;
+            margin: 0 auto;
+            min-height: 100vh;
+            padding-bottom: 64px;
+        }
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.96);
+            border-bottom: 1px solid #f1f5f9;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+            backdrop-filter: blur(10px);
+        }
+
+        .brand-logo {
+            width: 64px;
+            height: 64px;
+            border-radius: 18px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+            flex-shrink: 0;
+        }
+
+        .brand-title {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 16px;
+            font-weight: 900;
+            letter-spacing: 0.28em;
+            color: #facc15;
+            white-space: nowrap;
+        }
+
+        .socials {
+            display: flex;
+            gap: 8px;
+            margin-left: auto;
+        }
+
+        .social-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .social-instagram {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        }
+
+        .social-facebook {
+            background: #1877f2;
+        }
+
+        .main {
+            padding: 22px 14px 0;
+            display: grid;
+            gap: 18px;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid #f1f5f9;
+            border-radius: 28px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .hero-bar {
+            background: var(--orange);
+            padding: 24px 24px 20px;
+            color: #fff;
+        }
+
+        .hero-title {
+            margin: 0;
+            font-size: 34px;
+            line-height: 1;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+        }
+
+        .trip-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .trip-cell {
+            padding: 16px 20px;
+            font-size: 17px;
+            font-weight: 800;
+            border-right: 1px solid var(--line);
+        }
+
+        .trip-cell:last-child { border-right: 0; }
+
+        .flight-list { display: grid; }
+
+        .flight-row {
+            display: grid;
+            grid-template-columns: 44px 1fr auto;
+            gap: 14px;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .flight-row:last-child { border-bottom: 0; }
+
+        .flight-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .flight-icon.outbound { background: var(--orange-soft); color: var(--orange); }
+        .flight-icon.return { background: var(--blue-soft); color: #2563eb; }
+
+        .flight-time {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .flight-meta, .flight-duration {
+            margin: 3px 0 0;
+            color: var(--muted);
+        }
+
+        .flight-meta { font-size: 13px; }
+        .flight-duration { font-size: 12px; }
+
+        .badge {
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: 900;
+            white-space: nowrap;
+        }
+
+        .badge.green { background: #dcfce7; color: #166534; }
+        .badge.gray { background: #f3f4f6; color: #6b7280; }
+
+        .hotel-card { overflow: hidden; }
+
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 256px;
+            background: #f3f4f6;
+        }
+
+        .carousel-track {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .carousel-track::-webkit-scrollbar { display: none; }
+
+        .carousel-slide {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            flex: 0 0 100%;
+            scroll-snap-align: center;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-empty {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .carousel-overlay {
+            position: absolute;
+            inset: auto 0 0 0;
+            padding: 44px 16px 16px;
+            background: linear-gradient(to top, rgba(0,0,0,0.72), rgba(0,0,0,0.28), rgba(0,0,0,0));
+        }
+
+        .carousel-link-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.92);
+            color: #111827;
+            border-radius: 18px;
+            padding: 10px 14px;
+            font-size: 12px;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        .carousel-count {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(0,0,0,0.42);
+            color: #fff;
+            border-radius: 12px;
+            padding: 5px 10px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .carousel-dots {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 12px;
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .carousel-dot {
+            border: 0;
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.52);
+            padding: 0;
+        }
+
+        .carousel-dot.active {
+            width: 18px;
+            background: #fff;
+        }
+
+        .section-body {
+            padding: 20px;
+            display: grid;
+            gap: 16px;
+        }
+
+        .hotel-name {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 900;
+            line-height: 1.1;
+        }
+
+        .hotel-meta {
+            margin-top: 10px;
+            padding-left: 14px;
+            border-left: 4px solid #fb923c;
+        }
+
+        .hotel-meta-top {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--muted);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .rating-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .rating-chip {
+            background: #fef3c7;
+            color: #b45309;
+            border-radius: 8px;
+            padding: 3px 8px;
+            font-size: 14px;
+            font-weight: 900;
+        }
+
+        .muted-text {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.65;
+        }
+
+        .expandable-text {
+            position: relative;
+        }
+
+        .expandable-text-content {
+            color: #374151;
+            line-height: 1.7;
+            font-size: 14px;
+            overflow: hidden;
+        }
+
+        .expandable-text-content.clamped {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .expandable-toggle {
+            margin-top: 10px;
+            border: 0;
+            background: transparent;
+            color: var(--orange);
+            padding: 0;
+            font-size: 12px;
+            font-weight: 900;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .soft-block {
+            background: #f9fafb;
+            border-radius: 18px;
+            padding: 16px;
+        }
+
+        .soft-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .soft-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 18px;
+            background: var(--orange-soft);
+            color: var(--orange);
+        }
+
+        .soft-title {
+            margin: 0;
+            font-size: 17px;
+            font-weight: 900;
+        }
+
+        .soft-caption {
+            margin: 4px 0 0;
+            font-size: 12px;
+            color: var(--muted);
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+
+        .soft-value {
+            margin: 4px 0 0;
+            font-size: 14px;
+            color: #374151;
+            font-weight: 700;
+        }
+
+        .included {
+            background: var(--green-soft);
+            border: 1px solid #dcfce7;
+            border-radius: 18px;
+            padding: 16px;
+        }
+
+        .included .soft-icon {
+            background: #fff;
+            color: var(--green);
+        }
+
+        .included-label {
+            margin: 0 0 6px;
+            color: #15803d;
+            text-transform: uppercase;
+            font-size: 12px;
+            font-weight: 900;
+        }
+
+        .included-text {
+            margin: 0;
+            color: #374151;
+            font-size: 14px;
+            line-height: 1.65;
+            font-weight: 700;
+        }
+
+        .outline-btn {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px;
+            border: 1px solid #fed7aa;
+            border-radius: 18px;
+            color: var(--orange);
+            font-size: 13px;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-style: italic;
+        }
+
+        .order-btn {
+            display: block;
+            background: var(--orange);
+            color: #fff;
+            border-radius: 24px;
+            padding: 22px 20px;
+            text-align: center;
+            box-shadow: 0 18px 34px rgba(249, 115, 22, 0.24);
+        }
+
+        .order-price {
+            margin: 0 0 16px;
+            font-size: 34px;
+            font-weight: 900;
+            letter-spacing: -0.04em;
+        }
+
+        .order-chip {
+            display: inline-flex;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: #25d366;
+            border-radius: 18px;
+            padding: 14px;
+            font-size: 15px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .reels-card {
+            padding: 20px;
+        }
+
+        .section-title {
+            margin: 0 0 16px;
+            font-size: 22px;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        .reels-row {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding-bottom: 4px;
+        }
+
+        .reels-row::-webkit-scrollbar { display: none; }
+
+        .reel-card {
+            position: relative;
+            width: 128px;
+            height: 224px;
+            flex: 0 0 auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+        }
+
+        .reel-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .reel-play {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.2);
+            color: #fff;
+            font-size: 38px;
+        }
+
+        .notice-card { padding: 20px; }
+
+        .notice-row {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .notice-title {
+            margin: 0 0 8px;
+            font-size: 16px;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        .notice-text {
+            margin: 0;
+            color: #374151;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 60;
+            background: rgba(15, 23, 42, 0.45);
+            display: none;
+        }
+
+        .overlay.open { display: block; }
+
+        .overlay-panel {
+            position: absolute;
+            inset: 0;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .overlay-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .overlay-title {
+            margin: 0;
+            font-size: 24px;
+            font-style: italic;
+            font-weight: 900;
+        }
+
+        .overlay-close {
+            width: 46px;
+            height: 46px;
+            border: 0;
+            background: #f3f4f6;
+            border-radius: 18px;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        .overlay-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f9fafb;
+            display: grid;
+            gap: 16px;
+        }
+
+        .review-card {
+            background: #fff;
+            border: 1px solid #f1f5f9;
+            border-radius: 24px;
+            padding: 18px;
+            box-shadow: var(--shadow);
+        }
+
+        .review-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .review-author {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 900;
+        }
+
+        .review-date {
+            margin-top: 4px;
+            color: #9ca3af;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .review-score {
+            background: #fef3c7;
+            color: #b45309;
+            border-radius: 16px;
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: 900;
+            white-space: nowrap;
+        }
+
+        .review-trigger {
+            border: 0;
+            background: transparent;
+            padding: 0;
+            text-align: left;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+    <div class="page" id="app"></div>
+
+    <div class="overlay" id="reviews-overlay">
+        <div class="overlay-panel">
+            <div class="overlay-header">
+                <h3 class="overlay-title">Отзывы гостей</h3>
+                <button class="overlay-close" id="reviews-close" type="button">×</button>
+            </div>
+            <div class="overlay-body" id="reviews-list"></div>
+        </div>
+    </div>
+
+    <script>
+        const parseInjectedJson = (raw, fallback) => {
+            if (!raw || raw.includes("{{")) return fallback;
+            try { return JSON.parse(raw); } catch { return fallback; }
+        };
+
+        const fallbackFlights = [
+            { type: "туда", date: "2026.05.01", depTime: "21:35", arrTime: "00:25", duration: "04:50", baggage: "уточняется" },
+            { type: "обратно", date: "2026.05.05", depTime: "11:45", arrTime: "18:25", duration: "04:40", baggage: "уточняется" }
+        ];
+
+        const fallbackHotels = [
+            {
+                name: "Cicilia Danang Hotels & Spa",
+                stars: 4,
+                rating: 4.3,
+                location: "Дананг",
+                roomType: "Deluxe Twin with Window",
+                mealPlan: "Завтрак включен",
+                description: "Отель расположен в нескольких шагах от пляжа Ми Кхе. К услугам гостей панорамный бассейн на крыше, спа-центр и современные номера с видом на океан или город.",
+                hotelLink: "",
+                images: [],
+                reviews: [],
+                price: "2,650,000 KRW"
+            }
+        ];
+
+        const fallbackReels = [
+            { thumbnail: "reel_1.png", link: "https://www.instagram.com/stories/highlights/18404039212150167/" },
+            { thumbnail: "reel_2.png", link: "https://www.instagram.com/stories/highlights/18073118810103351/" },
+            { thumbnail: "reel_3.png", link: "https://www.instagram.com/stories/highlights/18207003232316313/" }
+        ];
+
+        const injectedCity = String.raw`НЯЧАНГ`;
+        const injectedDates = String.raw`2026.07.19 - 2026.07.26`;
+        const injectedPax = String.raw`3`;
+        const injectedTotalPrice = String.raw`от 2,700,000 KRW`;
+        const injectedIncluded = String.raw`Перелет, проживание, Трансфер, Страховка`;
+
+        const tourData = {
+            city: injectedCity.includes("{{") ? "ДАНАНГ" : injectedCity,
+            dates: injectedDates.includes("{{") ? "2026.05.01 - 2026.05.05" : injectedDates,
+            pax: Number(injectedPax.includes("{{") ? 2 : injectedPax),
+            totalPrice: injectedTotalPrice.includes("{{") ? "от 2,550,000 KRW" : injectedTotalPrice,
+            included: injectedIncluded.includes("{{") ? "Перелет, проживание, Трансфер, Страховка" : injectedIncluded,
+            termsNote: "После покупки тура любые изменения или отмена поездки производятся со штрафами. Размер штрафов зависит от условий авиакомпании, отеля и сроков отказа (за сколько дней до поездки).",
+            logoPath: "logo.png",
+            contact: {
+                whatsapp: "821099752550",
+                instagram: "https://www.instagram.com/mango.tour_?utm_source=qr&igsh=MWoyZDZ6NnZrcXg3cA==",
+                facebook: "https://www.facebook.com/share/1FHwMCpMCN/?mibextid=wwXIfr"
+            },
+            flights: parseInjectedJson(String.raw`[{"date": "2026.07.19", "depTime": "18:45", "arrTime": "22:15", "duration": "5h 30m", "baggage": "ручна", "airline": "", "from": "", "to": "", "number": "", "type": "туда"}, {"date": "2026.07.26", "depTime": "21:50", "arrTime": "04:30", "duration": "4h 40m", "baggage": "ручная", "airline": "", "from": "", "to": "", "number": "", "type": "обратно"}]`, fallbackFlights),
+            hotels: parseInjectedJson(String.raw`[{"name": "Amber Nha Trang Hotel", "stars": 4, "rating": 4.2, "location": "Нячанг", "roomType": "Делюкс с двуспальной кроватью или 2 односпальными", "mealPlan": "Не включено", "description": "Современный отель в центре Нячанга, предлагающий комфортабельные номера с панорамными окнами. В шаговой доступности находятся пляж, рестораны и ночные рынки. Подходит для активных туристов, желающих быть в центре городских событий и легко добираться до главных достопримечательностей.", "amenities": [], "hotelLink": "https://www.google.com/maps/search/?api=1&query=Amber+Nha+Trang+Hotel", "images": ["https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=AaVGc3klOMgoMr40IR1UwLXaO9Mox0K-JXzX3iQLEmaoBBl14cMPDx4wKeHFizYtArSnlhFbClowP31WseCnd6yggcRsTDTEk_BJmSe9RxE5rAnw_mS7X8WmjvP-Cc4i0lWpnZ_JDgFyNLCdBlK8UKn8ok-dQ8x-s8Yc_aKg2mved_o6QmAXf2JEhHeNeYG_gG3jJEHyyW8MIiB9B7zoTFV2An_4qNn5T4ZeloBwAJDCjeuupL0r1V-JEv0HwxpLC1Kn1MCLAM5kY0KIUkKDS1pj1h21YMBKPi-0dPJ345EN68tJsBUNi63DXhPD3_j28kzRMkpGyEhG6veG3ncDKQgYSD093qJdlC2zYr88aWZeiTVRINpx6rConjnf9CYs4Gc_mWHdhht3ll7mwKbwbiUOyJnRomQTLrh8mWDTJ7pBUs0uJFwW&key=AIzaSyBkCmkDx5hbHSvUuyU3pH5l4vZuQTdQ6bo"], "reviews": [], "price": "2,700,000 KRW"}, {"name": "Emerald Bay Hotel & Spa Nha Trang", "stars": 4, "rating": 4.8, "location": "Нячанг", "roomType": "Делюкс, 2 односпальные кровати, вид на город", "mealPlan": "Завтрак включен", "description": "Элегантный отель, расположенный недалеко от живописного побережья Нячанга. К услугам гостей открытый бассейн, спа-центр и фитнес-зал. Светлые и просторные номера отлично подойдут для спокойного отдыха после насыщенного дня на пляже или увлекательных экскурсиях по городу.", "amenities": [], "hotelLink": "https://www.google.com/maps/search/?api=1&query=Emerald+Bay+Hotel+&+Spa+Nha+Trang", "images": ["https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=AaVGc3k5pqqyaJBy7qYmOfe69DoUYiPHfY5TEDGsYlLhJH4x01ejJM-XMdFZzejt12TNg8gICp9PEsceG3EPBZr4aW90Bwj5qbdu0tNeX2rY6OzXPPaLPKvwan3BpP3EZV5ZioCX_palwGKSGMUtpoJH_6DIRUfmxts6kAws2aBNllWkrk4lIe9V7v8aeTuxa0GKm-D9ktiZFLdz6k7hVJ97Xs5egUTSxE1sglXkCAJuYH2cAH11m83DytxD0w5ilLSF7NmRngwlDznqrJHT8o9reVUssXvkMmIHZKPoMhRcGLiT_yKwQMrH1iBmNhzl0wdtARatj35vbanDgvW1K6ARQ6zSADESlOacmPeXAceWb9gDo5WAuTp4g2LKVWWPn5E7pAQkFFtLCqLWxlpiAgwS-N44MlMV3RanynMQb67BiSeflOJCoGLAPP1pdKd-_g&key=AIzaSyBkCmkDx5hbHSvUuyU3pH5l4vZuQTdQ6bo"], "reviews": [], "price": "2,800,000 KRW"}, {"name": "Comodo Nha Trang Hotel", "stars": 5, "rating": 4.3, "location": "Нячанг", "roomType": "Двухместный номер Senior с видом на море", "mealPlan": "Завтрак включен", "description": "Роскошный отель на первой береговой линии с потрясающим видом на море. Гостям доступны открытый бассейн на крыше, несколько ресторанов и стильные номера. Идеальный выбор для ценителей высокого уровня сервиса, качественной кухни и красивых морских пейзажей прямо из окна.", "amenities": ["Доступно для инвалидов"], "hotelLink": "https://www.google.com/maps/search/?api=1&query=Comodo+Nha+Trang+Hotel", "images": ["https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=AaVGc3mNVpIxpLs5RZaoL9Jw2_C6lj1yPKDLRn0fK3Uao09-i7MC1A55Gt9_h-HTmvuXieJIDZnCNrsOzFX7zMTQaqBjLeYzxrJVFtLRKxvnl7DVmf8F8fmVqTxbLor-XJo7HJUnCy6YaelYrxnlkoSV1fmnfD1GWIzhju_69sbataNNSBigixYxo9JMb3XNxWpJXLKYmKij44Njixh51dvbufeL2Y-RfyqP82LUvQEAYPbJAIUnCizi7iIOrEDa2B-zBXp1jg2_SVAtznWd4G596FhxiV9_xcovvSt8wFUwPGvVmtJAUmeRj5xIjfNUdoAA6yg9CXPEmBEUGxQjWQjS2wvkQunWnxy54nr9A9VfepUE7GOiCAsEj9qdBM753CXFQ50bWSgvu7uFfWOtRswdOBddIPhV_3pE6AYrd2fjGuPyqko6&key=AIzaSyBkCmkDx5hbHSvUuyU3pH5l4vZuQTdQ6bo"], "reviews": [], "price": "3,150,000 KRW"}]`, fallbackHotels),
+            igReels: parseInjectedJson(String.raw`[{"thumbnail": "https://raw.githubusercontent.com/mangotour/Offers/main/reel_1.png", "link": "https://www.instagram.com/stories/highlights/18404039212150167/"}, {"thumbnail": "https://raw.githubusercontent.com/mangotour/Offers/main/reel_2.png", "link": "https://www.instagram.com/stories/highlights/18073118810103351/"}, {"thumbnail": "https://raw.githubusercontent.com/mangotour/Offers/main/reel_3.png", "link": "https://www.instagram.com/stories/highlights/18207003232316313/"}, {"thumbnail": "https://raw.githubusercontent.com/mangotour/Offers/main/reel_4.png", "link": "https://www.instagram.com/stories/highlights/18098414977586720/"}]`, fallbackReels)
+        };
+
+        const app = document.getElementById("app");
+        const overlay = document.getElementById("reviews-overlay");
+        const reviewsList = document.getElementById("reviews-list");
+        const reviewsClose = document.getElementById("reviews-close");
+
+        const escapeHtml = (value) => String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+
+        const getOrderLink = (hotel) => {
+            const flightLines = (tourData.flights || []).map((flight) => {
+                const label = flight.type ? flight.type.toUpperCase() : "РЕЙС";
+                const date = flight.date ? `${flight.date} ` : "";
+                const time = [flight.depTime, flight.arrTime].filter(Boolean).join(" - ");
+                return `${label}: ${date}${time}`.trim();
+            }).filter(Boolean);
+            const details = [
+                `Здравствуйте! Хочу заказать тур в отель ${hotel.name} по цене ${hotel.price || tourData.totalPrice}.`,
+                tourData.dates ? `Даты тура: ${tourData.dates}.` : "",
+                ...flightLines
+            ].filter(Boolean).join("\n");
+            return `https://wa.me/${tourData.contact.whatsapp}?text=${encodeURIComponent(details)}`;
+        };
+
+        const renderStarsText = (count) => {
+            if (!count) return "";
+            const lastDigit = Number(count) % 10;
+            if (lastDigit === 1) return `${count} звезда`;
+            if (lastDigit >= 2 && lastDigit <= 4) return `${count} звезды`;
+            return `${count} звезд`;
+        };
+
+        const createCarousel = (hotel, hotelIndex) => {
+            const images = Array.isArray(hotel.images) ? hotel.images.filter(Boolean) : [];
+            if (!images.length) {
+                return `<div class="carousel"><div class="carousel-empty">Нет доступных фото</div></div>`;
+            }
+
+            const slides = images.map((img, idx) => {
+                const imageTag = `<img src="${escapeHtml(img)}" alt="${escapeHtml(hotel.name)} фото ${idx + 1}">`;
+                const overlayHtml = hotel.hotelLink ? `
+                    <div class="carousel-overlay">
+                        <span class="carousel-link-chip">🖼 Больше фотографий</span>
+                    </div>
+                ` : "";
+                const body = hotel.hotelLink
+                    ? `<a class="carousel-slide" href="${escapeHtml(hotel.hotelLink)}" target="_blank" rel="noopener noreferrer">${imageTag}${overlayHtml}</a>`
+                    : `<div class="carousel-slide">${imageTag}</div>`;
+                return body;
+            }).join("");
+
+            const dots = images.length > 1 ? `
+                <div class="carousel-dots">
+                    ${images.map((_, idx) => `<button type="button" class="carousel-dot${idx === 0 ? " active" : ""}" data-carousel-dot="${hotelIndex}" data-index="${idx}"></button>`).join("")}
+                </div>
+            ` : "";
+
+            const count = images.length > 1 ? `<div class="carousel-count" data-carousel-count="${hotelIndex}">1 / ${images.length}</div>` : "";
+
+            return `
+                <div class="carousel" data-carousel="${hotelIndex}">
+                    <div class="carousel-track" data-carousel-track="${hotelIndex}">
+                        ${slides}
+                    </div>
+                    ${count}
+                    ${dots}
+                </div>
+            `;
+        };
+
+        const createExpandableText = (text, lines, className = "") => {
+            if (!text) return "";
+            return `
+                <div class="expandable-text ${className}" data-lines="${lines}">
+                    <div class="expandable-text-content clamped">${escapeHtml(text)}</div>
+                    <button type="button" class="expandable-toggle hidden">Читать далее</button>
+                </div>
+            `;
+        };
+
+        const createFlightRows = () => {
+            if (!tourData.flights || !tourData.flights.length) {
+                return `<div class="flight-row"><div></div><div class="muted-text">Данные о рейсах уточняются</div><div></div></div>`;
+            }
+
+            return tourData.flights.map((flight) => {
+                const isOutbound = (flight.type || "").toLowerCase().includes("туда");
+                const iconClass = isOutbound ? "outbound" : "return";
+                const icon = isOutbound ? "✈" : "🛬";
+                const meta = [flight.airline, flight.number].filter(Boolean).join(" · ");
+                const route = [flight.from, flight.to].filter(Boolean).join(" – ");
+                const details = [meta, route].filter(Boolean).join(" · ");
+                return `
+                    <div class="flight-row">
+                        <div class="flight-icon ${iconClass}">${icon}</div>
+                        <div>
+                            <p class="flight-time">${escapeHtml(flight.depTime || "--:--")} — ${escapeHtml(flight.arrTime || "--:--")}</p>
+                            ${details ? `<p class="flight-meta">${escapeHtml(details)}</p>` : ""}
+                            ${flight.duration ? `<p class="flight-duration">${escapeHtml(flight.duration)}</p>` : ""}
+                        </div>
+                        <div class="badge ${flight.baggage ? "green" : "gray"}">${flight.baggage ? `Багаж ${escapeHtml(flight.baggage)}` : "Без багажа"}</div>
+                    </div>
+                `;
+            }).join("");
+        };
+
+        const createReviewsMarkup = (hotel, hotelIndex) => {
+            const reviews = Array.isArray(hotel.reviews) ? hotel.reviews : [];
+            if (!reviews.length) return "";
+            return `
+                <button type="button" class="outline-btn review-trigger" data-reviews-trigger="${hotelIndex}">
+                    ⭐ Читать отзывы гостей
+                </button>
+            `;
+        };
+
+        const createHotelCard = (hotel, hotelIndex) => {
+            const locationBits = [hotel.location, renderStarsText(hotel.stars)].filter(Boolean).join(" · ");
+            const ratingMarkup = hotel.rating
+                ? `
+                    <div class="rating-row">
+                        <span class="rating-chip">${Number(hotel.rating).toFixed(1).replace(".0", "")}</span>
+                    </div>
+                `
+                : "";
+
+            return `
+                <section class="card hotel-card">
+                    ${createCarousel(hotel, hotelIndex)}
+                    <div class="section-body">
+                        <div>
+                            <h3 class="hotel-name">${escapeHtml(hotel.name)}</h3>
+                            <div class="hotel-meta">
+                                <div class="hotel-meta-top">${escapeHtml(locationBits)}</div>
+                                ${ratingMarkup}
+                            </div>
+                        </div>
+
+                        ${hotel.description ? createExpandableText(hotel.description, 5) : ""}
+
+                        <div class="soft-block">
+                            <div class="soft-row">
+                                <div class="soft-icon">🛏</div>
+                                <div>
+                                    <p class="soft-title">${escapeHtml(hotel.roomType || "Тип номера уточняется")}</p>
+                                    <p class="soft-caption">Питание</p>
+                                    <p class="soft-value">${escapeHtml(hotel.mealPlan || "Уточняется")}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        ${tourData.included ? `
+                            <div class="included">
+                                <div class="soft-row">
+                                    <div class="soft-icon">✓</div>
+                                    <div>
+                                        <p class="included-label">Включено в стоимость</p>
+                                        <p class="included-text">${escapeHtml(tourData.included)}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        ` : ""}
+
+                        ${hotel.hotelLink ? `
+                            <a class="outline-btn" href="${escapeHtml(hotel.hotelLink)}" target="_blank" rel="noopener noreferrer">↗ Узнать больше</a>
+                        ` : ""}
+
+                        ${createReviewsMarkup(hotel, hotelIndex)}
+
+                        <a class="order-btn" href="${escapeHtml(getOrderLink(hotel))}" target="_blank" rel="noopener noreferrer">
+                            <p class="order-price">${escapeHtml(hotel.price || tourData.totalPrice)}</p>
+                            <span class="order-chip">💬 Заказать в WhatsApp</span>
+                        </a>
+                    </div>
+                </section>
+            `;
+        };
+
+        const createReelsSection = () => {
+            if (!tourData.igReels || !tourData.igReels.length) return "";
+            return `
+                <section class="card reels-card">
+                    <h3 class="section-title">Отзывы наших туристов</h3>
+                    <div class="reels-row">
+                        ${tourData.igReels.map((reel) => `
+                            <a class="reel-card" href="${escapeHtml(reel.link)}" target="_blank" rel="noopener noreferrer">
+                                <img src="${escapeHtml(reel.thumbnail)}" alt="Видео отзыв">
+                                <div class="reel-play">▶</div>
+                            </a>
+                        `).join("")}
+                    </div>
+                </section>
+            `;
+        };
+
+        const createNoticeSection = () => {
+            if (!tourData.termsNote) return "";
+            return `
+                <section class="card notice-card">
+                    <div class="notice-row">
+                        <div class="soft-icon">📄</div>
+                        <div>
+                            <h3 class="notice-title">Изменения и отмена</h3>
+                            <p class="notice-text">${escapeHtml(tourData.termsNote)}</p>
+                        </div>
+                    </div>
+                </section>
+            `;
+        };
+
+        const renderPage = () => {
+            app.innerHTML = `
+                <header class="header">
+                    <div class="brand-logo"><img src="${escapeHtml(tourData.logoPath)}" alt="Mango Tour"></div>
+                    <div class="brand-title">MANGO TOUR</div>
+                    <div class="socials">
+                        <a class="social-btn social-instagram" href="${escapeHtml(tourData.contact.instagram)}" target="_blank" rel="noopener noreferrer">◎</a>
+                        <a class="social-btn social-facebook" href="${escapeHtml(tourData.contact.facebook)}" target="_blank" rel="noopener noreferrer">f</a>
+                    </div>
+                </header>
+
+                <main class="main">
+                    <section class="card">
+                        <div class="hero-bar">
+                            <h1 class="hero-title">${escapeHtml(tourData.city)}</h1>
+                        </div>
+                        <div class="trip-grid">
+                            <div class="trip-cell">${escapeHtml(tourData.dates)}</div>
+                            <div class="trip-cell">${escapeHtml(tourData.pax)} чел.</div>
+                        </div>
+                        <div class="flight-list">
+                            ${createFlightRows()}
+                        </div>
+                    </section>
+
+                    ${(tourData.hotels || []).map((hotel, index) => createHotelCard(hotel, index)).join("")}
+                    ${createReelsSection()}
+                    ${createNoticeSection()}
+                </main>
+            `;
+        };
+
+        const setupExpandables = () => {
+            document.querySelectorAll(".expandable-text").forEach((block) => {
+                const content = block.querySelector(".expandable-text-content");
+                const button = block.querySelector(".expandable-toggle");
+                const lines = Number(block.dataset.lines || "5");
+                content.style.webkitLineClamp = String(lines);
+
+                requestAnimationFrame(() => {
+                    const needsToggle = content.scrollHeight > content.clientHeight + 8;
+                    if (!needsToggle) return;
+                    button.classList.remove("hidden");
+                    button.addEventListener("click", () => {
+                        const expanded = !content.classList.contains("clamped");
+                        if (expanded) {
+                            content.classList.add("clamped");
+                            content.style.webkitLineClamp = String(lines);
+                            button.textContent = "Читать далее";
+                        } else {
+                            content.classList.remove("clamped");
+                            content.style.webkitLineClamp = "unset";
+                            button.textContent = "Скрыть";
+                        }
+                    });
+                });
+            });
+        };
+
+        const setupCarousels = () => {
+            document.querySelectorAll("[data-carousel]").forEach((carousel) => {
+                const idx = carousel.dataset.carousel;
+                const track = carousel.querySelector(`[data-carousel-track="${idx}"]`);
+                const count = carousel.querySelector(`[data-carousel-count="${idx}"]`);
+                const dots = carousel.querySelectorAll(`[data-carousel-dot="${idx}"]`);
+                if (!track || !dots.length) return;
+
+                const update = () => {
+                    const slideWidth = track.clientWidth || 1;
+                    const current = Math.round(track.scrollLeft / slideWidth);
+                    dots.forEach((dot, dotIndex) => dot.classList.toggle("active", dotIndex === current));
+                    if (count) count.textContent = `${current + 1} / ${dots.length}`;
+                };
+
+                track.addEventListener("scroll", update, { passive: true });
+                dots.forEach((dot) => {
+                    dot.addEventListener("click", () => {
+                        const target = Number(dot.dataset.index || "0");
+                        track.scrollTo({ left: target * track.clientWidth, behavior: "smooth" });
+                    });
+                });
+                update();
+            });
+        };
+
+        const openReviews = (reviews) => {
+            reviewsList.innerHTML = reviews.length ? reviews.map((review) => `
+                <div class="review-card">
+                    <div class="review-head">
+                        <div>
+                            <p class="review-author">${escapeHtml(review.author || "Гость")}</p>
+                            <div class="review-date">${escapeHtml(review.date || "")}</div>
+                        </div>
+                        <div class="review-score">Оценка: ${escapeHtml(Number(review.rating || 10).toFixed(1).replace(".0", ""))}/10</div>
+                    </div>
+                    ${createExpandableText(review.text || "", 3)}
+                </div>
+            `).join("") : `<div class="review-card"><p class="notice-text">Отзывы появятся скоро</p></div>`;
+
+            overlay.classList.add("open");
+            document.body.style.overflow = "hidden";
+            setupExpandables();
+        };
+
+        const setupReviews = () => {
+            document.querySelectorAll("[data-reviews-trigger]").forEach((button) => {
+                button.addEventListener("click", () => {
+                    const index = Number(button.dataset.reviewsTrigger || "0");
+                    const hotel = (tourData.hotels || [])[index] || {};
+                    openReviews(Array.isArray(hotel.reviews) ? hotel.reviews : []);
+                });
+            });
+        };
+
+        const closeReviews = () => {
+            overlay.classList.remove("open");
+            document.body.style.overflow = "auto";
+        };
+
+        reviewsClose.addEventListener("click", closeReviews);
+        overlay.addEventListener("click", (event) => {
+            if (event.target === overlay) closeReviews();
+        });
+
+        renderPage();
+        setupExpandables();
+        setupCarousels();
+        setupReviews();
+    </script>
+</body>
+</html>
