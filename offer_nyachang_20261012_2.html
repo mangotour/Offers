@@ -243,6 +243,27 @@
             font-weight: 600;
         }
 
+        .carousel-empty-link {
+            flex-direction: column;
+            gap: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .carousel-empty-chip {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            color: var(--orange);
+            border: 1px solid #fed7aa;
+            border-radius: 999px;
+            padding: 10px 14px;
+            font-size: 12px;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
         .carousel-overlay {
             position: absolute;
             inset: auto 0 0 0;
@@ -780,6 +801,16 @@
         const createCarousel = (hotel, hotelIndex) => {
             const images = Array.isArray(hotel.images) ? hotel.images.filter(Boolean) : [];
             if (!images.length) {
+                if (hotel.hotelLink) {
+                    return `
+                        <div class="carousel">
+                            <a class="carousel-empty carousel-empty-link" href="${escapeHtml(hotel.hotelLink)}" target="_blank" rel="noopener noreferrer">
+                                <span>Нет доступных фото</span>
+                                <span class="carousel-empty-chip">↗ Открыть отель</span>
+                            </a>
+                        </div>
+                    `;
+                }
                 return `<div class="carousel"><div class="carousel-empty">Нет доступных фото</div></div>`;
             }
 
